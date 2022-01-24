@@ -7,11 +7,16 @@ export const MenuContainer = styled.div`
     justify-content: space-around;
 `
 
-//////////////////////////////////////////////////////////
+/////////////////////////////// Cadastro components start ///////////////////////////////////////////
+
+export const CadastroContainer = styled.div`
+    width: 70%;
+    margin: auto;
+`
 
 export const Form = styled.form`
-    width: 70%;
-    margin: 50px auto;
+    width: 100%;
+    margin: auto;
 `
 
 export const FormSection = styled.section`
@@ -39,3 +44,21 @@ export const FormSectionBody = styled.div`
     background-color: inherit;
     padding: 5px;
 `
+
+//////////////////////////////// Cadastro component end /////////////////////////////////////////
+
+//////////////////////////////// Lista component start /////////////////////////////////////////
+
+export const ListaContainer = styled.div`
+    width: 70%;
+    margin: auto;
+`
+
+export const ListaTableDiv = styled.div`
+    background-color: white;
+    height: 700px;
+    width: 100%;
+    padding: 25px;
+`
+
+//////////////////////////////// Lista component end /////////////////////////////////////////
