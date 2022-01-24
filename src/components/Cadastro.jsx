@@ -1,8 +1,19 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { TextField, Select, MenuItem, InputLabel } from '@mui/material';
 import {Form, FormSection, FormSectionHeader, FormSectionBody, FormSectionHeaderTitle} from '../style';
+import { UFapi } from '../services/api';
 
 const Cadastro = () => {
+
+    const [uf, setUF] = useState([]);
+    const [ufSelected, setSelectedUF] = useState('');
+    useEffect(()=>{
+        UFapi.get('estados').then((response)=>{
+            setUF(response.data);
+            console.log(response)
+        })
+        .catch((error)=>{console.log(error)})
+    }, [])
 
     return (
 
@@ -27,8 +38,12 @@ const Cadastro = () => {
                     <TextField sx={{m: 1}} variant='standard' label='Bairro'/>
                     <Select
                         variant='standard'
-                        sx={{m: 3, mb: 0, width:50}}>
-                        <MenuItem value={'Ceará'}>CE</MenuItem>    
+                        sx={{m: 3, mb: 0, width:50}}
+                        value={ufSelected}
+                        onChange={(ev)=>{setSelectedUF(ev.target.value)}}>
+                        {uf.map(uf => {
+                            return <MenuItem key={uf.id} value={uf.nome}>{uf.sigla}</MenuItem> 
+                        })}
                     </Select>
                     <TextField sx={{m: 1, mb: 1}} variant='standard' label='Cidade'/>
                 </FormSectionBody>
