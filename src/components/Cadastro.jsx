@@ -1,22 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import { TextField, Select, MenuItem, Typography, IconButton, Tooltip } from '@mui/material';
+import React from 'react';
+import { TextField, Select, MenuItem, Typography, IconButton, Tooltip, Button } from '@mui/material';
 import {Form, FormSection, FormSectionHeader, FormSectionBody, CadastroContainer,
 } from '../style';
-import { UFapi } from '../services/api';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
+import useEmpresasDados from '../custom_hooks/useEmpresasDados';
 
 const Cadastro = () => {
 
-    const [uf, setUF] = useState([]);
-    const [ufSelected, setSelectedUF] = useState('');
-    useEffect(()=>{
-        UFapi.get('estados').then((response)=>{
-            setUF(response.data);
-            console.log(response)
-        })
-        .catch((error)=>{console.log(error)})
-    }, [])
+    const [setCpf, setDocumento, setNome, setEmail, 
+        setData, setCep, setEndereco, setNumero, 
+        setComplemento, setBairro, ufSelected, setSelectedUF, unidadesFederais, novaEmpresa] = useEmpresasDados();
 
     return (
         <CadastroContainer>
@@ -25,7 +19,6 @@ const Cadastro = () => {
                     fontWeight={'300'} 
                     color={'white'} 
                     variant='button' 
-                    component={'p'}
                     ml={0}>
                         <Tooltip title='Retornar'>
                             <IconButton sx={{color: 'white', m:0, p:0}}>
@@ -39,17 +32,20 @@ const Cadastro = () => {
                 </Typography>
             </Link>
             
-            <Form>
+            <Form onSubmit={ev=>{
+                ev.preventDefault()
+                novaEmpresa()}}>
                 <FormSection>
                     <FormSectionHeader>
                         <Typography variant='h6' ml={1}>Cadastrar Empresa</Typography>
+                        <Button type='submit' sx={{mr:2}} variant='contained'>Salvar</Button>
                     </FormSectionHeader>
                     <FormSectionBody>
-                        <TextField sx={{m: 1, mr: 1}} variant='standard' label='CPF' type='number'/>
-                        <TextField sx={{m: 1, mr: 1}} variant='standard' label='Documento' type='text'/>
-                        <TextField sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Nome completo/Razão social' type='text'/>
-                        <TextField sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Email' type='email'/>
-                        <TextField sx={{m: 1, mr: 1}} variant='standard' label='Data de abertura' type='text'/>
+                        <TextField onChange={ev=>setCpf(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='CPF' type='number'/>
+                        <TextField onChange={ev=>setDocumento(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='Documento' type='text'/>
+                        <TextField onChange={ev=>setNome(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Nome completo/Razão social' type='text'/>
+                        <TextField onChange={ev=>setEmail(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Email' type='email'/>
+                        <TextField onChange={ev=>setData(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='Data de abertura' type='text'/>
                     </FormSectionBody>
                 </FormSection>
                 <FormSection>
@@ -57,17 +53,17 @@ const Cadastro = () => {
                         <Typography variant='h6' ml={1}>Endereço</Typography>
                     </FormSectionHeader>
                     <FormSectionBody>
-                        <TextField sx={{m: 1, width: 90}} variant='standard' type='number' label='CEP'/>
-                        <TextField sx={{m: 1, width: 250}} variant='standard' label='Endereço'/>
-                        <TextField sx={{m: 1, width: 70}} variant='standard' type='number' label='Numero'/>
-                        <TextField sx={{m: 1}} variant='standard' label='Complemento'/>
-                        <TextField sx={{m: 1}} variant='standard' label='Bairro'/>
+                        <TextField onChange={ev=>setCep(ev.target.value)} sx={{m: 1, width: 90}} variant='standard' type='number' label='CEP'/>
+                        <TextField onChange={ev=>setEndereco(ev.target.value)} sx={{m: 1, width: 250}} variant='standard' label='Endereço'/>
+                        <TextField onChange={ev=>setNumero(ev.target.value)} sx={{m: 1, width: 70}} variant='standard' type='number' label='Numero'/>
+                        <TextField onChange={ev=>setComplemento(ev.target.value)} sx={{m: 1}} variant='standard' label='Complemento'/>
+                        <TextField onChange={ev=>setBairro(ev.target.value)} sx={{m: 1}} variant='standard' label='Bairro'/>
                         <Select
                             variant='standard'
                             sx={{m: 3, mb: 0, width:50}}
                             value={ufSelected}
                             onChange={(ev)=>{setSelectedUF(ev.target.value)}}>
-                            {uf.map(uf => {
+                            {unidadesFederais.map(uf => {
                                 return <MenuItem key={uf.id} value={uf.nome}>{uf.sigla}</MenuItem> 
                             })}
                         </Select>
