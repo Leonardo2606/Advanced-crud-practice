@@ -32,6 +32,8 @@ export const FormSectionHeader = styled.div`
     padding: 10px 0;
     background-color: rgb(105,105,105);
     color: white;
+    display: flex;
+    justify-content: space-between;
 `
 
 export const FormSectionHeaderTitle = styled.p`
@@ -50,14 +52,16 @@ export const FormSectionBody = styled.div`
 //////////////////////////////// Lista component start /////////////////////////////////////////
 
 export const ListaContainer = styled.div`
-    width: 70%;
+    width: 75%;
     margin: auto;
+    padding: 15px;
+    overflow: hidden;
 `
 
 export const ListaTableDiv = styled.div`
     background-color: white;
     height: 700px;
-    width: 100%;
+    width: 95%;
     padding: 25px;
 `
 
