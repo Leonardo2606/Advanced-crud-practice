@@ -5,6 +5,8 @@ import {Form, FormSection, FormSectionHeader, FormSectionBody, CadastroContainer
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
 import useEmpresasDados from '../custom_hooks/useEmpresasDados';
+import {store} from '../redux/store'
+import { novaEmpresaAction } from '../redux/empresasReducer';
 
 const Cadastro = () => {
 
@@ -33,8 +35,8 @@ const Cadastro = () => {
             </Link>
             
             <Form onSubmit={ev=>{
-                ev.preventDefault()
-                novaEmpresa()}}>
+                ev.preventDefault();
+                store.dispatch(novaEmpresaAction(novaEmpresa()));}}>
                 <FormSection>
                     <FormSectionHeader>
                         <Typography variant='h6' ml={1}>Cadastrar Empresa</Typography>
@@ -43,7 +45,7 @@ const Cadastro = () => {
                     <FormSectionBody>
                         <TextField onChange={ev=>setCpf(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='CPF' type='number'/>
                         <TextField onChange={ev=>setDocumento(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='Documento' type='text'/>
-                        <TextField onChange={ev=>setNome(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Nome completo/Razão social' type='text'/>
+                        <TextField required onChange={ev=>setNome(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Nome completo/Razão social' type='text'/>
                         <TextField onChange={ev=>setEmail(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Email' type='email'/>
                         <TextField onChange={ev=>setData(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='Data de abertura' type='text'/>
                     </FormSectionBody>
