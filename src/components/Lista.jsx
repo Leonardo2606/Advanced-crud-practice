@@ -1,13 +1,15 @@
 import React from 'react';
 import { ListaContainer, ListaTableDiv } from '../style';
-import { Typography } from '@mui/material';
+import { Typography, IconButton, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import {Link} from 'react-router-dom';
+import { store } from '../redux/store';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const Lista = () => {
 
     const columns = [
-        { field: 'id', headerName: 'Identificação', width: 250 },
+        { field: 'id', headerName: 'Nome', width: 250 },
         { field: 'cidadeUf', headerName: 'Cidade/UF', width: 150 },
         { field: 'cep', headerName: 'CEP', type:'number', width: 130 },
         {
@@ -15,18 +17,9 @@ const Lista = () => {
           headerName: 'Data de abertura',
           width: 150,
         },
-      ];
-      
-      const rows = [
-        { id: 'Facebook Inc.', cidadeUf: 'Curitiba/PR', cep: '80.320-320', dataDeAbertura: '08/2020' },
-        { id: 'Facebook Inc.', cidadeUf: 'Curitiba/PR', cep: '80.320-320', dataDeAbertura: '08/2020' },
-        { id: 'Facebook Inc.', cidadeUf: 'Curitiba/PR', cep: '80.320-320', dataDeAbertura: '08/2020' },
-        { id: 'Facebook Inc.', cidadeUf: 'Curitiba/PR', cep: '80.320-320', dataDeAbertura: '08/2020' },
-        { id: 'Facebook Inc.', cidadeUf: 'Curitiba/PR', cep: '80.320-320', dataDeAbertura: '08/2020' },
-        { id: 'Facebook Inc.', cidadeUf: 'Curitiba/PR', cep: '80.320-320', dataDeAbertura: '08/2020' },
-        { id: 'Facebook Inc.', cidadeUf: 'Curitiba/PR', cep: '80.320-320', dataDeAbertura: '08/2020' },
-        { id: 'Facebook Inc.', cidadeUf: 'Curitiba/PR', cep: '80.320-320', dataDeAbertura: '08/2020' },
-      ];
+    ];
+
+    const rows = store.getState().empresasArrayView;
 
     return (
         <ListaContainer>
@@ -44,9 +37,26 @@ const Lista = () => {
                     pageSize={10}
                     rowsPerPageOptions={[10]}
                     checkboxSelection
-                />    
+                />
+                   
             </ListaTableDiv>
-        
+            <Link to={'/Cadastro'}>
+                <Tooltip title='Nova Empresa'>
+                    <IconButton sx={
+                            {
+                                color: 'orange',
+                                m:'auto',
+                                position: 'sticky',
+                                bottom: 0,
+                                left: 1025,
+                                '@media (max-width:860px)':{
+                                    mr:2
+                                }
+                            }}>
+                        <AddCircleIcon sx={{fontSize: 50}}/>
+                    </IconButton>
+                </Tooltip> 
+            </Link>
         </ListaContainer>
     )
 

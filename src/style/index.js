@@ -52,7 +52,7 @@ export const FormSectionBody = styled.div`
 //////////////////////////////// Lista component start /////////////////////////////////////////
 
 export const ListaContainer = styled.div`
-    width: 75%;
+    width: 80%;
     margin: auto;
     padding: 15px;
     overflow: hidden;
@@ -62,7 +62,7 @@ export const ListaTableDiv = styled.div`
     background-color: white;
     height: 700px;
     width: 95%;
-    padding: 25px;
+    padding: 30px;
 `
 
 //////////////////////////////// Lista component end /////////////////////////////////////////
