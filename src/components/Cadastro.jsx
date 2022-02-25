@@ -5,7 +5,7 @@ import {Form, FormSection, FormSectionHeader, FormSectionBody, CadastroContainer
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
 import useEmpresasDados from '../custom_hooks/useEmpresasDados';
-import {store} from '../redux/store'
+import store from '../redux/store'
 import { novaEmpresaAction } from '../redux/empresasReducer';
 
 const Cadastro = () => {

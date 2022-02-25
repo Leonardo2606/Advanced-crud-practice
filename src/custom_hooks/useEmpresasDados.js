@@ -22,13 +22,12 @@ function useEmpresasDados() {
         .catch(error=>console.log(error))
     }, [])
 
-   
     function novaEmpresa() {
         const empresaDadosStorage = {
             cpf, documento, nome, email, data, cep, endereco,
             numero, complemento, bairro, ufSelected
         };
-        const empresaDadosView = {id: nome, cidadeUf: ufSelected, cep: cep, dataDeAbertura: data};
+        const empresaDadosView = { nome, ufSelected, cep, data};
         return {empresaDadosStorage, empresaDadosView};
     }
 
