@@ -31,7 +31,7 @@ function useEmpresasDados() {
         return {empresaDadosStorage, empresaDadosView};
     }
 
-        return [setCpf, setDocumento, setNome, setEmail, 
+        return [cpf, setCpf, setDocumento, setNome, setEmail, 
         setData, setCep, setEndereco, setNumero, 
         setComplemento, setBairro, ufSelected, setSelectedUF, unidadesFederais, novaEmpresa];
 

@@ -5,14 +5,15 @@ import {Form, FormSection, FormSectionHeader, FormSectionBody, CadastroContainer
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
 import useEmpresasDados from '../custom_hooks/useEmpresasDados';
+import useValidarDados from '../custom_hooks/useValidarDados';
 import store from '../redux/store'
 import { novaEmpresaAction } from '../redux/empresasReducer';
 
 const Cadastro = () => {
 
-    const [setCpf, setDocumento, setNome, setEmail, 
-        setData, setCep, setEndereco, setNumero, 
+    const [cpf, setCpf, setDocumento, setNome, setEmail, setData, setCep, setEndereco, setNumero, 
         setComplemento, setBairro, ufSelected, setSelectedUF, unidadesFederais, novaEmpresa] = useEmpresasDados();
+    const [erros, validarDado] = useValidarDados();
 
     return (
         <CadastroContainer>
@@ -43,7 +44,18 @@ const Cadastro = () => {
                         <Button type='submit' sx={{mr:2}} variant='contained'>Salvar</Button>
                     </FormSectionHeader>
                     <FormSectionBody>
-                        <TextField onChange={ev=>setCpf(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='CPF' type='number'/>
+                        <TextField 
+                            required
+                            helperText={erros.cpf.text}
+                            error={erros.cpf.valid} 
+                            onChange={ev=>{if(ev.target.value.length > 11){ev.target.value.substring(0,11)} else setCpf(ev.target.value)}}
+                            onBlur={validarDado}
+                            value={cpf} 
+                            sx={{m: 1, mr: 1}}
+                            name='cpf' 
+                            variant='standard' 
+                            label='CPF' 
+                            type='number'/>
                         <TextField onChange={ev=>setDocumento(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='Documento' type='text'/>
                         <TextField required onChange={ev=>setNome(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Nome completo/Razão social' type='text'/>
                         <TextField onChange={ev=>setEmail(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Email' type='email'/>
@@ -55,7 +67,12 @@ const Cadastro = () => {
                         <Typography variant='h6' ml={1}>Endereço</Typography>
                     </FormSectionHeader>
                     <FormSectionBody>
-                        <TextField onChange={ev=>setCep(ev.target.value)} sx={{m: 1, width: 90}} variant='standard' type='number' label='CEP'/>
+                        <TextField 
+                            onChange={ev=>setCep(ev.target.value)}
+                            sx={{m: 1, width: 90}}
+                            variant='standard' 
+                            type='number' 
+                            label='CEP'/>
                         <TextField onChange={ev=>setEndereco(ev.target.value)} sx={{m: 1, width: 250}} variant='standard' label='Endereço'/>
                         <TextField onChange={ev=>setNumero(ev.target.value)} sx={{m: 1, width: 70}} variant='standard' type='number' label='Numero'/>
                         <TextField onChange={ev=>setComplemento(ev.target.value)} sx={{m: 1}} variant='standard' label='Complemento'/>
