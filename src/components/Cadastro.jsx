@@ -13,7 +13,13 @@ const Cadastro = () => {
 
     const [cpf, setCpf, setDocumento, setNome, setEmail, setData, setCep, setEndereco, setNumero, 
         setComplemento, setBairro, ufSelected, setSelectedUF, unidadesFederais, novaEmpresa] = useEmpresasDados();
-    const [erros, validarDado] = useValidarDados();
+    const allValidations = { 
+        cpf: (value) => {
+            if(value.length != 11) return {cpf:{valid:true, text:'CPF inválido'}};
+            else return {cpf:{valid:false, text:''}};
+        }
+    }
+    const [erros, validarDado] = useValidarDados(allValidations);
 
     return (
         <CadastroContainer>
