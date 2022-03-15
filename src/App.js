@@ -4,8 +4,8 @@ import {
   Route
 } from "react-router-dom";
 import Menu from "./components/Menu";
-import Cadastro from './components/Cadastro';
-import Lista from "./components/Lista";
+import Register from './components/Register';
+import List from "./components/List";
 import {Provider} from 'react-redux';
 import store from './redux/store.js';
 
@@ -15,8 +15,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Menu />}/>
-          <Route path='/Cadastro' element={<Cadastro />}/>
-          <Route path='/Lista' element={<Lista />}/>
+          <Route path='/Register' element={<Register />}/>
+          <Route path='/List' element={<List />}/>
         </Routes>
       </Router>   
     </Provider>

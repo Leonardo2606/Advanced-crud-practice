@@ -8,10 +8,10 @@ const Menu = () => {
     return (
 
         <MenuContainer>
-            <Link style={{textDecoration: 'none'}} to={'/Lista'}>
+            <Link style={{textDecoration: 'none'}} to={'/List'}>
                 <Button variant='contained'>Listar Empresas</Button>
             </Link>
-            <Link style={{textDecoration:'none'}} to='/Cadastro'>
+            <Link style={{textDecoration:'none'}} to='/Register'>
                 <Button variant='contained'>Cadastrar Empresas</Button>
             </Link>
             

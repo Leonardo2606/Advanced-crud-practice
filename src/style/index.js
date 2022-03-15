@@ -9,7 +9,7 @@ export const MenuContainer = styled.div`
 
 /////////////////////////////// Cadastro components start ///////////////////////////////////////////
 
-export const CadastroContainer = styled.div`
+export const RegisterContainer = styled.div`
     width: 70%;
     margin: auto;
 `

@@ -1,18 +1,18 @@
 import React from 'react';
 import { TextField, Select, MenuItem, Typography, IconButton, Tooltip, Button } from '@mui/material';
-import {Form, FormSection, FormSectionHeader, FormSectionBody, CadastroContainer,
+import {Form, FormSection, FormSectionHeader, FormSectionBody, RegisterContainer,
 } from '../style';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
 import useCompaniesData from '../custom_hooks/useCompaniesData';
 import useValidateData from '../custom_hooks/useValidateData';
 import store from '../redux/store'
-import { novaEmpresaAction } from '../redux/companiesReducer';
+import { newCompanyAction } from '../redux/companiesReducer';
 
 const Register = () => {
 
-    const [cpf, setCpf, setDocumento, setNome, setEmail, setData, setCep, setEndereco, setNumero, 
-        setComplemento, setBairro, ufSelected, setSelectedUF, unidadesFederais, novaEmpresa] = useCompaniesData();
+    const [cpf, setCpf, setDocument, setName, setEmail, setData, setCep, setAddress, setNumber, 
+        setComplement, setNeighborhood, ufSelected, setSelectedUF, federalUnits, newCompany] = useCompaniesData();
     const allValidations = { 
         cpf: (value) => {
             if(value.length != 11) return {cpf:{valid:true, text:'CPF inválido'}};
@@ -22,7 +22,7 @@ const Register = () => {
     const [erros, validarDado] = useValidateData(allValidations);
 
     return (
-        <CadastroContainer>
+        <RegisterContainer>
             <Link style={{textDecoration: 'none'}} to={'/List'}>
                 <Typography 
                     fontWeight={'300'} 
@@ -43,7 +43,7 @@ const Register = () => {
             
             <Form onSubmit={ev=>{
                 ev.preventDefault();
-                store.dispatch(novaEmpresaAction(novaEmpresa()));}}>
+                store.dispatch(newCompanyAction(newCompany()));}}>
                 <FormSection>
                     <FormSectionHeader>
                         <Typography variant='h6' ml={1}>Cadastrar Empresa</Typography>
@@ -51,7 +51,6 @@ const Register = () => {
                     </FormSectionHeader>
                     <FormSectionBody>
                         <TextField 
-                            required
                             helperText={erros.cpf.text}
                             error={erros.cpf.valid} 
                             onChange={ev=>{if(ev.target.value.length > 11){ev.target.value.substring(0,11)} else setCpf(ev.target.value)}}
@@ -62,8 +61,8 @@ const Register = () => {
                             variant='standard' 
                             label='CPF' 
                             type='number'/>
-                        <TextField onChange={ev=>setDocumento(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='Documento' type='text'/>
-                        <TextField required onChange={ev=>setNome(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Nome completo/Razão social' type='text'/>
+                        <TextField onChange={ev=>setDocument(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='Documento' type='text'/>
+                        <TextField required onChange={ev=>setName(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Nome completo/Razão social' type='text'/>
                         <TextField onChange={ev=>setEmail(ev.target.value)} sx={{m: 1, mr: 1, width: 300}} variant='standard' label='Email' type='email'/>
                         <TextField onChange={ev=>setData(ev.target.value)} sx={{m: 1, mr: 1}} variant='standard' label='Data de abertura' type='text'/>
                     </FormSectionBody>
@@ -79,16 +78,16 @@ const Register = () => {
                             variant='standard' 
                             type='number' 
                             label='CEP'/>
-                        <TextField onChange={ev=>setEndereco(ev.target.value)} sx={{m: 1, width: 250}} variant='standard' label='Endereço'/>
-                        <TextField onChange={ev=>setNumero(ev.target.value)} sx={{m: 1, width: 70}} variant='standard' type='number' label='Numero'/>
-                        <TextField onChange={ev=>setComplemento(ev.target.value)} sx={{m: 1}} variant='standard' label='Complemento'/>
-                        <TextField onChange={ev=>setBairro(ev.target.value)} sx={{m: 1}} variant='standard' label='Bairro'/>
+                        <TextField onChange={ev=>setAddress(ev.target.value)} sx={{m: 1, width: 250}} variant='standard' label='Endereço'/>
+                        <TextField onChange={ev=>setNumber(ev.target.value)} sx={{m: 1, width: 70}} variant='standard' type='number' label='Numero'/>
+                        <TextField onChange={ev=>setComplement(ev.target.value)} sx={{m: 1}} variant='standard' label='Complemento'/>
+                        <TextField onChange={ev=>setNeighborhood(ev.target.value)} sx={{m: 1}} variant='standard' label='Bairro'/>
                         <Select
                             variant='standard'
                             sx={{m: 3, mb: 0, width:50}}
                             value={ufSelected}
                             onChange={(ev)=>{setSelectedUF(ev.target.value)}}>
-                            {unidadesFederais.map(uf => {
+                            {federalUnits.map(uf => {
                                 return <MenuItem key={uf.id} value={uf.nome}>{uf.sigla}</MenuItem> 
                             })}
                         </Select>
@@ -96,7 +95,7 @@ const Register = () => {
                     </FormSectionBody>
                 </FormSection>
             </Form>
-        </CadastroContainer>
+        </RegisterContainer>
     )
 
 }

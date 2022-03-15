@@ -25,27 +25,26 @@ const companiesSlice = createSlice({
     name: 'empresas',
     initialState: initialState,
     reducers: {
-        novaEmpresaAction (state, action) {
+        newCompanyAction (state, action) {
             state.empresasArrayStorage = [...state.empresasArrayStorage, action.payload.empresaDadosStorage];
             state.empresasArrayView = [...state.empresasArrayView, action.payload.empresaDadosView];
-            console.log(state.empresasArrayStorage)
         },
-        deletarEmpresaAction (state, action) {
+        deleteCompanyAction (state, action) {
             state.empresasArrayView = state.empresasArrayView.filter((empresa, idx) => idx !== action.payload);
             state.empresasArrayStorage = state.empresasArrayStorage.filter((empresa, idx) => idx !== action.payload);
         },
-        editarEmpresaAction (state, action) {
+        editCompanyAction (state, action) {
             console.log('disparou editar action')
             const empresaViewToBeEdited = state.empresasArrayView[action.payload.index];
             const empresaStorageToBeEdited = state.empresasArrayStorage[action.payload.index];
-            if( action.payload.valores.nome === empresaViewToBeEdited.nome &&
+            if( action.payload.valores.name === empresaViewToBeEdited.name &&
                 action.payload.valores.cep === empresaViewToBeEdited.cep &&
                 action.payload.valores.uf === empresaViewToBeEdited.ufSelected &&
                 action.payload.valores.data === empresaViewToBeEdited.data) {console.log('nada mudou'); return}
             else {
                 
-                empresaViewToBeEdited.nome = action.payload.valores.nome;
-                empresaStorageToBeEdited.nome = action.payload.valores.nome;
+                empresaViewToBeEdited.name = action.payload.valores.name;
+                empresaStorageToBeEdited.name = action.payload.valores.name;
             
                 empresaViewToBeEdited.cep = action.payload.valores.cep;
                 empresaStorageToBeEdited.cep = action.payload.valores.cep;
@@ -64,5 +63,5 @@ const companiesSlice = createSlice({
     }
 })
 
-export const {novaEmpresaAction, deletarEmpresaAction, editarEmpresaAction} = companiesSlice.actions;
+export const {newCompanyAction, deleteCompanyAction, editCompanyAction} = companiesSlice.actions;
 export default companiesSlice.reducer;

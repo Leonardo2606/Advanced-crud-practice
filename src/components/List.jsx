@@ -13,13 +13,13 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
-import { deletarEmpresaAction, editarEmpresaAction } from '../redux/companiesReducer';
+import { deleteCompanyAction, editCompanyAction } from '../redux/companiesReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { editedRow } from '../services/helpers';
 
 const List = () => {
 
-    const [selectedRow, setSelectedRow] = useState(null);
+    const [selectedRows, setSelectedRows] = useState([]);
     const dispatch = useDispatch();
     const empresas = useSelector(state => state.companies.empresasArrayView);
 
@@ -42,8 +42,8 @@ const List = () => {
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {empresas.map((empresa, index) => {
+                    <TableBody id='companiesTable'>
+                        {empresas.map((empresa, index)  => {
                             return (
                                 <TableRow
                                     className='trows'
@@ -52,15 +52,15 @@ const List = () => {
                                     key={index} 
                                     sx={{alignContent:'center'}}>
                                     <TableCell
-                                        contentEditable={selectedRow === index} 
+                                        contentEditable={selectedRows.includes(index)} 
                                         id='nome'
                                         className='campo'
                                         suppressContentEditableWarning={true} 
                                         >
-                                            {empresa.nome}
+                                            {empresa.name}
                                     </TableCell>
                                     <TableCell
-                                        contentEditable={selectedRow === index} 
+                                        contentEditable={selectedRows.includes(index)} 
                                         id='cep'
                                         className='campo'
                                         suppressContentEditableWarning={true}
@@ -68,7 +68,7 @@ const List = () => {
                                             {empresa.cep}
                                     </TableCell>
                                     <TableCell
-                                        contentEditable={selectedRow === index} 
+                                        contentEditable={selectedRows.includes(index)} 
                                         id='uf'
                                         className='campo'
                                         suppressContentEditableWarning={true}
@@ -76,7 +76,7 @@ const List = () => {
                                             {empresa.ufSelected}
                                     </TableCell>
                                     <TableCell
-                                        contentEditable={selectedRow === index} 
+                                        contentEditable={selectedRows.includes(index)} 
                                         id='data'
                                         className='campo'
                                         suppressContentEditableWarning={true}
@@ -85,24 +85,28 @@ const List = () => {
                                     </TableCell>
                                     <TableCell id='nonEditable' align='right'>
                                         <Tooltip title='Editar'>
-                                            {selectedRow === index 
+                                            {selectedRows.includes(index)
                                                 ? (
                                                     <IconButton onClick={(ev)=>{
-                                                        dispatch(editarEmpresaAction({valores:editedRow(ev), index}));
-                                                        setSelectedRow(null)
+                                                        dispatch(editCompanyAction({valores:editedRow(ev), index}));
+                                                        let newState = [...selectedRows];
+                                                        newState = newState.filter(idx => idx !== index)
+                                                        setSelectedRows(newState);
                                                     }}>
                                                         <SaveIcon/>
                                                     </IconButton>
                                                 ) 
                                                 : (
-                                                    <IconButton onClick={()=>{setSelectedRow(index)}}>
+                                                    <IconButton onClick={()=>{
+                                                        setSelectedRows([...selectedRows, index]);
+                                                    }}>
                                                         <EditIcon/>
                                                     </IconButton>
                                                 )}
                                         </Tooltip>
                                         <Tooltip title='Deletar'>
                                             <IconButton onClick={()=>{
-                                                dispatch(deletarEmpresaAction(index));
+                                                dispatch(deleteCompanyAction(index));
                                             }}>
                                                 <DeleteIcon/>
                                             </IconButton>
