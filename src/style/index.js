@@ -2,9 +2,17 @@ import styled from 'styled-components';
 
 export const MenuContainer = styled.div`
     margin: 20px auto;
-    width: 40%;
+    width: 50%;
     display: flex;
     justify-content: space-around;
+    transition: all .50s ease-in-out;
+    @media (max-width: 950px) {
+        width: 80%;
+    }
+`
+
+export const LinkBox = styled.div`
+    margin: 5px 0 8px 0;
 `
 
 /////////////////////////////// Cadastro components start ///////////////////////////////////////////
@@ -12,6 +20,10 @@ export const MenuContainer = styled.div`
 export const RegisterContainer = styled.div`
     width: 70%;
     margin: auto;
+    @media (max-width: 662px) {
+        width: 98%;
+        padding: 5px;
+    }
 `
 
 export const Form = styled.form`
@@ -43,8 +55,12 @@ export const FormSectionHeaderTitle = styled.p`
 `
 
 export const FormSectionBody = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
     background-color: inherit;
     padding: 5px;
+    padding-bottom: 30px;
 `
 
 //////////////////////////////// Cadastro component end /////////////////////////////////////////
@@ -54,8 +70,11 @@ export const FormSectionBody = styled.div`
 export const ListaContainer = styled.div`
     width: 80%;
     margin: auto;
-    padding: 15px;
     overflow: hidden;
+    @media(max-width: 662px) {
+        width: 98%;
+        padding: 5px;
+    }
 `
 
 export const ListaTableDiv = styled.div`
