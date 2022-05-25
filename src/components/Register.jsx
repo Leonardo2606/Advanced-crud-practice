@@ -1,21 +1,47 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { FormControl, FormHelperText, TextField, Select, MenuItem, Typography, IconButton, Tooltip, Button, 
-    Input, InputLabel } from '@mui/material';
+    Alert, Slide, InputLabel } from '@mui/material';
 import {Form, FormSection, FormSectionHeader, FormSectionBody, RegisterContainer,
     LinkBox} from '../style';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
 import useCompaniesData from '../custom_hooks/useCompaniesData';
-import SelectInput from '@mui/material/Select/SelectInput';
-import { hover } from '@testing-library/user-event/dist/hover';
-import { isFocusable } from '@testing-library/user-event/dist/utils';
 
 const Register = () => {
 
     const [formik, federalUnits, cnpjMask, cepMask, requestCep, requestedCep] = useCompaniesData();
 
+    const [checked, setChecked] = useState(false);
+    function handleAlertChange() {
+        setChecked(prev => !prev)
+        setTimeout(()=>{
+            setChecked(prev => !prev)
+        }, 5000)
+    }
+
     return (
         <RegisterContainer>
+            <Slide direction='down' in={checked} mountOnEnter unmountOnExit >
+                <Alert 
+                    severity='success'
+                    sx={{
+                        width:260,
+                        position:'fixed',
+                        left:'40vw',
+                        '@media (max-width: 1100px)':{
+                            left:'35vw'
+                        },
+                        '@media (max-width: 820px)':{
+                            left:'30vw'
+                        },
+                        '@media (max-width: 662px)':{
+                            left:'21vw'
+                        }
+                    }}>
+                        Empresa cadastrada com sucesso!
+                </Alert>
+            </Slide>
+
             <LinkBox>
                 <Link style={{textDecoration: 'none'}} to={'/List'}>
                     <Typography  
@@ -37,7 +63,11 @@ const Register = () => {
             
 
 
-            <Form onSubmit={formik.handleSubmit}>
+            <Form onSubmit={e=>{
+                e.preventDefault();
+                formik.handleSubmit();
+                handleAlertChange();
+            }}>
                 <FormSection>
                     <FormSectionHeader>
                         <Typography 
@@ -46,7 +76,7 @@ const Register = () => {
                                 Cadastrar Empresa
                         </Typography>
                         <Button 
-                            type='submit' 
+                            type='submit'
                             sx={{mr:2}} 
                             variant='contained'>
                                 Salvar
