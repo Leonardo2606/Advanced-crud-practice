@@ -1,6 +1,5 @@
 function editedRow(ev) {
     const tr = ev.target.closest('tr');
-    console.log(tr.childNodes[2].childNodes)
     const valores = {
         name: tr.childNodes[0].innerHTML,
         email: tr.childNodes[1].innerHTML,

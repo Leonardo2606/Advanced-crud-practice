@@ -36,6 +36,14 @@ function useCompaniesData() {
     //////////////////////////////////////////////////////
 
     const todayDate = new Date();
+    const [checked, setChecked] = useState(false);
+    function handleSuccessAlert(){
+        setChecked(prev => !prev)
+        setTimeout(()=>{
+            setChecked(prev => !prev)
+        }, 4000) 
+    }
+
     const formik = useFormik({
         initialValues: {
             cnpj:'',
@@ -66,8 +74,8 @@ function useCompaniesData() {
                 .required('Escreva o nome da empresa'),
             data: Yup
                 .date()
-                .required('Entre uma data válida')
-                .max(todayDate, 'Data futura não permitida'),
+                .max(todayDate, 'Data futura não permitida')
+                .required('Entre uma data válida'),
             ufSelected: Yup
                 .string()
                 .required('Selecione o Estado'),
@@ -76,8 +84,9 @@ function useCompaniesData() {
                 .min(9, 'Cep precisa ter 8 números')
                 .required('Digite um cep')
         }),
-        onSubmit: values => {
-              store.dispatch(newCompanyAction(newCompany(values)))
+        onSubmit: (values) => {
+                store.dispatch(newCompanyAction(newCompany(values)));
+                handleSuccessAlert();
         },
     });
 
@@ -130,7 +139,7 @@ function useCompaniesData() {
 
 
 
-    return [formik, federalUnits, cnpjMask, cepMask, requestCep, requestedCep];
+    return [formik, federalUnits, cnpjMask, cepMask, requestCep, requestedCep, checked];
 
 }
 

@@ -9,16 +9,8 @@ import useCompaniesData from '../custom_hooks/useCompaniesData';
 
 const Register = () => {
 
-    const [formik, federalUnits, cnpjMask, cepMask, requestCep, requestedCep] = useCompaniesData();
-
-    const [checked, setChecked] = useState(false);
-    function handleAlertChange() {
-        setChecked(prev => !prev)
-        setTimeout(()=>{
-            setChecked(prev => !prev)
-        }, 4000)
-    }
-
+    const [formik, federalUnits, cnpjMask, cepMask, requestCep, requestedCep, checked] = useCompaniesData();
+    
     return (
         <RegisterContainer>
             <Slide direction='down' in={checked} mountOnEnter unmountOnExit >
@@ -60,11 +52,7 @@ const Register = () => {
                 </Link>
             </LinkBox>
             
-            <Form onSubmit={e=>{
-                e.preventDefault();
-                formik.handleSubmit();
-                handleAlertChange();
-            }}>
+            <Form onSubmit={formik.handleSubmit}>
                 <FormSection>
                     <FormSectionHeader>
                         <Typography 
@@ -145,7 +133,6 @@ const Register = () => {
                             type='file'
                         />
                         <InputLabel 
-                            required 
                             sx={{display:'flex', alignItems:'center', width:300}}
                             onBlur={formik.handleBlur}
                             error={formik.touched.data && formik.errors.data ? true : false}
