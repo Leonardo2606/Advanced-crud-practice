@@ -101,8 +101,7 @@ function useCompaniesData() {
         } catch(err){
             console.log(err);
         } finally {
-            if(cep.length > 9) return cep.substring(0,8);
-            else return cep
+            return cep
         }
     }
 

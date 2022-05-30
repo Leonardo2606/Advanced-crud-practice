@@ -16,7 +16,7 @@ const Register = () => {
         setChecked(prev => !prev)
         setTimeout(()=>{
             setChecked(prev => !prev)
-        }, 5000)
+        }, 4000)
     }
 
     return (
@@ -60,9 +60,6 @@ const Register = () => {
                 </Link>
             </LinkBox>
             
-            
-
-
             <Form onSubmit={e=>{
                 e.preventDefault();
                 formik.handleSubmit();
