@@ -23,14 +23,20 @@ function useCompaniesData() {
     }
     function newCompany(values) {
         const empresaDadosStorage = {
-            ...values
-        };
-        const name = values.name;
-        const email = values.email;
-        const cep = values.cep;
-        const data = formatDate(values.data);
-        const empresaDadosView = { name, email, cep, data};
-        return {empresaDadosStorage, empresaDadosView};
+            name:values.name,
+            email:values.email,
+            cep:values.cep,
+            data:formatDate(values.data),
+            cnpj:values.cnpj,
+            document:values.document,
+            address:values.address,
+            number:values.number,
+            complement:values.complement,
+            neighborhood:values.neighborhood,
+            ufSelected:values.ufSelected,
+            city:values.city,
+        }; 
+        return {empresaDadosStorage};
     }
 
     //////////////////////////////////////////////////////
@@ -46,12 +52,12 @@ function useCompaniesData() {
 
     const formik = useFormik({
         initialValues: {
-            cnpj:'',
-            document:'',
             name:'',
             email:'',
-            data:'',
             cep:'',
+            data:'',
+            cnpj:'',
+            document:'',
             address:'',
             number:'',
             complement:'',
@@ -105,7 +111,6 @@ function useCompaniesData() {
                 const response = await cepApi.get(`/${cep}/json`);
                 setRequestedCep(response.data);
                 updateCepInfo(response.data)
-                console.log(requestedCep)
             }
         } catch(err){
             console.log(err);
