@@ -1,20 +1,16 @@
-import {useState, useEffect} from 'react';
-import { UnidadeFederalApi, cepApi } from '../services/api';
+// Off for now...
+
+
+/*import {useState} from 'react';
 import store from '../redux/store'
 import { newCompanyAction } from '../redux/companiesReducer';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import useMaskAndApi from './useMaskAndApi';
 
 function useCompaniesData() {
 
-    const [federalUnits, setUF] = useState([]);
-    useEffect(()=>{
-        UnidadeFederalApi.get('estados')
-        .then(response=>{setUF(response.data)})
-        .catch(error=>console.log(error))
-    }, [])
-
-    //////////////////////////////////////////////////////
+    const [federalUnits, cnpjMask, cepMask, requestCep, requestedCep] = useMaskAndApi();
 
     function formatDate(data) {
         var tempDate = new Date(data);
@@ -91,61 +87,15 @@ function useCompaniesData() {
                 .required('Digite um cep')
         }),
         onSubmit: (values) => {
+                values.address = requestedCep.logradouro;
+                values.city = requestedCep.localidade
                 store.dispatch(newCompanyAction(newCompany(values)));
                 handleSuccessAlert();
         },
     });
 
-    function updateCepInfo(cepInfo) {
-        formik.values.address = cepInfo.logradouro;
-        formik.values.city = cepInfo.localidade;
-        formik.values.neighborhood = cepInfo.bairro;
-        formik.values.complement = cepInfo.complemento;
-    }
-
-    const [requestedCep, setRequestedCep] = useState({});
-    async function requestCep(cepEvent) {
-        const cep = cepEvent.target.value;
-        try{
-            if(cep.length === 9) {
-                const response = await cepApi.get(`/${cep}/json`);
-                setRequestedCep(response.data);
-                updateCepInfo(response.data)
-            }
-        } catch(err){
-            console.log(err);
-        } finally {
-            return cep
-        }
-    }
-
-    //////////////////////////////////////////////////////
-
-    function cnpjMask(cnpj) {
-        if (cnpj.length <= 18) {  
-            cnpj = cnpj.replace(/\D/g, '');
-            cnpj = cnpj.replace(/^(\d{2})(\d)/, "$1.$2");
-            cnpj = cnpj.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
-            cnpj = cnpj.replace(/\.(\d{3})(\d)/, ".$1/$2");
-            cnpj = cnpj.replace(/(\d{4})(\d)/,"$1-$2");
-        } cnpj = cnpj.substring(0,18);
-        return cnpj;
-    }
-
-    function cepMask(cep) {
-        if(cep.length <= 9) {
-            cep = cep.replace(/\D/g, '')
-            cep = cep.replace(/^(\d{5})(\d)/, "$1-$2")
-        } cep = cep.substring(0,9)
-        return cep;
-    }
-
-    //////////////////////////////////////////////////////
-
-
-
-    return [formik, federalUnits, cnpjMask, cepMask, requestCep, requestedCep, checked];
+    return [formik, checked];
 
 }
 
-export default useCompaniesData;
+export default useCompaniesData;*/
