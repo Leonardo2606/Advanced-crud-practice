@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { ListaContainer, LinkBox } from '../style';
 import {Link} from 'react-router-dom';
-import { deleteCompanyAction, editCompanyAction } from '../redux/companiesReducer';
+import { deleteCompanyAction } from '../redux/companiesReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, IconButton, Tooltip, Paper } from '@mui/material';
-import ListDialogEditing from './ListDialogEditing';
+import ListFormEditing from './ListFormEditing';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -22,11 +22,11 @@ const List = () => {
     const dispatch = useDispatch();
     const empresas = useSelector(state => state.companies.empresasArrayStorage);
 
+    //////////////////////////////////////////////////////
     const [openClose, setOpenClose] = useState(false);
     function handleOpenCloseDialog() {
         setOpenClose(prev => !prev)
     }
-                                  // Importante info sobre essas duas funções embaixo da exportação componente.
     function dateFormatPromisse(empresa) {
         return new Promise((resolve, reject) => {
             let updateEmpresa = empresa;
@@ -38,14 +38,17 @@ const List = () => {
         })
     }
     const [actualEmpresa, setActualEmpresa] = useState({});
-     function changeEmpresa(empresa) {
+    const [actualEmpresaIndex, setActualEmpresaIndex] = useState();
+     function changeEmpresa(empresa, index) {
         dateFormatPromisse(empresa)
         .then((updatedEmpresa)=>{
             setActualEmpresa(updatedEmpresa);
+            setActualEmpresaIndex(index);
             handleOpenCloseDialog();
         })
         .catch((err)=>console.log(err));
     }
+    //////////////////////////////////////////////////////
 
     return (
         <ListaContainer>
@@ -62,7 +65,7 @@ const List = () => {
                     </Typography>
                 </Link>    
             </LinkBox>
-            
+                <ListFormEditing closeDialogFunc={handleOpenCloseDialog} onOrOff={openClose} empresa={actualEmpresa} idx={actualEmpresaIndex}/>
             <TableContainer sx={{overflow:'auto'}} component={Paper}>
                 <Table>
                     <TableHead>
@@ -112,14 +115,14 @@ const List = () => {
                                     </TableCell>
                                     <TableCell id='nonEditable' align='right' sx={{padding:1, paddingLeft:2, height:30}}>
                                         <Tooltip title='Editar'>
-                                            <IconButton onClick={()=>{
-                                                changeEmpresa(empresa);
+                                            <IconButton disabled={openClose} onClick={()=>{
+                                                changeEmpresa(empresa, index);
                                             }}>
                                                 <EditIcon />
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip title='Deletar'>
-                                            <IconButton onClick={()=>{
+                                            <IconButton disabled={openClose} onClick={()=>{
                                                 dispatch(deleteCompanyAction(index));
                                             }}>
                                                 <DeleteIcon />
@@ -127,13 +130,13 @@ const List = () => {
                                         </Tooltip>
                                     </TableCell>
 
-                                    <ListDialogEditing closeDialogFunc={handleOpenCloseDialog} onOrOff={openClose} empresa={actualEmpresa} idx={index}/>
 
                                 </TableRow>
                             )
                         })}
                     </TableBody>
                 </Table>
+            
             </TableContainer>
 
             <Link to={'/Register'}>
@@ -159,18 +162,3 @@ const List = () => {
 }
 
 export default List;
-
-
-/* A função changeEmpresa é executada ao clicar no botão editar na linha da tabela, ela atualiza um estado que conterá a empresa correta da 
-linha da tabela, em seguida a função handleOpenCloseDialog é executada, está func simplesmente abre o materialUI na tela, ela está dentro
-da função changeEmpresa e não no botão editar porque essa foi a forma encontrada para o formik do componente ListDialogEditing atualizar as
-informações da empresa selecionada dinamicamente. */
-
-
-/*<TableCell
-                                        contentEditable={selectedRow === index} 
-                                        id='nome'
-                                        className='campo'
-                                        suppressContentEditableWarning={true}
-                                        sx={{padding:1, paddingLeft:2, height:30}}
-                                    >*/
