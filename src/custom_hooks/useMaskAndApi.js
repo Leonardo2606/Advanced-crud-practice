@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
 
 
@@ -17,7 +17,7 @@ function useMaskAndApi() {
         UnidadeFederalApi.get('estados')
         .then(response=>{setUF(response.data)})
         .catch(error=>console.log(error))
-    }, [])
+    }, [federalUnits])
     
     const [requestedCep, setRequestedCep] = useState({});
     async function requestCep(cepEvent) {

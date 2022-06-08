@@ -203,8 +203,6 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                             value={listFormik.values.ufSelected}
                             onChange={listFormik.handleChange}
                             onBlur={listFormik.handleBlur}
-                            error={listFormik.errors.ufSelected && listFormik.touched.ufSelected ? true : false}
-                            helperText={listFormik.touched ? listFormik.errors.ufSelected : null}
                         >
                             {federalUnits.map(uf => {
                                 return <MenuItem key={uf.id} value={uf.nome}>{uf.sigla}</MenuItem> 

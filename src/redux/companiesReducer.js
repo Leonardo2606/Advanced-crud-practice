@@ -18,7 +18,7 @@ export const deletarEmpresaAction = createAction('deletarEmpresaAction');*/
 
 function formatDate(data) {
     var tempDate = new Date(data);
-    var formattedDate = [tempDate.getDate()+1, tempDate.getMonth()+1, tempDate.getFullYear()].join(' '+'/'+' ');
+    var formattedDate = [tempDate.getDate()+1, tempDate.getMonth()+1, tempDate.getFullYear()].join(` / `);
     return formattedDate
 }
 
