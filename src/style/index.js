@@ -67,10 +67,19 @@ export const FormSectionBody = styled.div`
 
 //////////////////////////////// Lista component start /////////////////////////////////////////
 
+export const ListFormEdit = styled.form`
+    margin: auto;
+    width: 70%;
+    display: grid;
+    grid-template-columns: 49% 49%;
+`
+
 export const ListaContainer = styled.div`
     width: 80%;
     margin: auto;
     overflow: hidden;
+    displat: grid;
+    grid-template-columns: 1fr;
     @media(max-width: 662px) {
         width: 98%;
         padding: 5px;
