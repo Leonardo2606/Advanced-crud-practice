@@ -17,7 +17,8 @@ function useMaskAndApi() {
         UnidadeFederalApi.get('estados')
         .then(response=>{setUF(response.data)})
         .catch(error=>console.log(error))
-    }, [federalUnits])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     
     const [requestedCep, setRequestedCep] = useState({});
     async function requestCep(cepEvent) {
