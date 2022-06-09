@@ -90,14 +90,17 @@ const Register = () => {
                 .required('Digite um cep')
         }),
         onSubmit: (values) => {
-                values.address = requestedCep.logradouro;
-                values.neighborhood = requestedCep.bairro;
-                values.city = requestedCep.localidade;
-                values.complement = requestedCep.complemento;
                 store.dispatch(newCompanyAction(newCompany(values)));
                 handleSuccessAlert();
         },
     });
+
+    function applyCepInfo(cepResponse) {
+        formik.values.address = cepResponse.logradouro;
+        formik.values.neighborhood = cepResponse.bairro;
+        formik.values.city = cepResponse.localidade;
+        formik.values.complement = cepResponse.complemento;
+    }
 
     return (
         <RegisterContainer>
@@ -252,12 +255,12 @@ const Register = () => {
                         <TextField 
                             onChange={async e=>{
                                 try {
-                                    let cep = await requestCep(e)
+                                    let cep = await requestCep(e, applyCepInfo)
                                     let maskedCep = cepMask(cep)
                                     formik.setValues(prevValues => ({
                                         ...prevValues,
                                         [e.target.name]: maskedCep
-                                    }))
+                                    }));
                                 } catch(err){console.log(err)}
                             }}
                             onBlur={formik.handleBlur}
@@ -273,7 +276,7 @@ const Register = () => {
                         />
                         <TextField 
                             onChange={formik.handleChange}
-                            value={requestedCep.logradouro ? requestedCep.logradouro : formik.values.address} 
+                            value={formik.values.address} 
                             name='address' 
                             sx={{m: 1, mt:0, width: 250}} 
                             variant='standard' 
@@ -291,7 +294,7 @@ const Register = () => {
                         />
                         <TextField 
                             onChange={formik.handleChange}
-                            value={requestedCep.complemento ? requestedCep.complemento : formik.values.complement} 
+                            value={formik.values.complement} 
                             name='complement' 
                             sx={{m: 1, mt:0}} 
                             variant='standard' 
@@ -301,7 +304,7 @@ const Register = () => {
                         <TextField 
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={requestedCep.bairro ? requestedCep.bairro : formik.values.neighborhood}
+                            value={formik.values.neighborhood}
                             name='neighborhood' 
                             sx={{m: 1, mt:0}} 
                             variant='standard' 
@@ -310,7 +313,7 @@ const Register = () => {
                         />
                         <TextField 
                             onChange={formik.handleChange}
-                            value={requestedCep.localidade ? requestedCep.localidade : formik.values.city} 
+                            value={formik.values.city} 
                             name='city' 
                             sx={{m: 1, mt:0, mb: 1}} 
                             variant='standard' 

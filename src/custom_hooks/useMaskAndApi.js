@@ -21,12 +21,13 @@ function useMaskAndApi() {
     }, [])
     
     const [requestedCep, setRequestedCep] = useState({});
-    async function requestCep(cepEvent) {
+    async function requestCep(cepEvent, applyCepInfo) {
         const cep = cepEvent.target.value;
         try{
             if(cep.length === 9) {
                 const response = await cepApi.get(`/${cep}/json`);
                 setRequestedCep(response.data);
+                applyCepInfo(response.data)
             }
         } catch(err){
             console.log(err);

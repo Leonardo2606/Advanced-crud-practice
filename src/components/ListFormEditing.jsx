@@ -66,6 +66,12 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
         },
     });
 
+    function applyCepInfoList(cepResponse) {
+        listFormik.values.address = cepResponse.logradouro;
+        listFormik.values.neighborhood = cepResponse.bairro;
+        listFormik.values.city = cepResponse.localidade;
+        listFormik.values.complement = cepResponse.complemento;
+    }
 
     return (
         <Slide direction='down' in={onOrOff} mountOnEnter unmountOnExit>
@@ -146,7 +152,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     value={listFormik.values.cep}
                     onChange={async e=>{
                         try {
-                            let cep = await requestCep(e)
+                            let cep = await requestCep(e, applyCepInfoList)
                             let maskedCep = cepMask(cep)
                             listFormik.setValues(prevValues => ({
                                 ...prevValues,
@@ -162,7 +168,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     sx={{margin:1}}
                     type='text'
                     name='address'
-                    value={requestedCep.logradouro ? requestedCep.logradouro : listFormik.values.address}
+                    value={listFormik.values.address}
                     onChange={listFormik.handleChange}
                 />
                 <TextField
@@ -176,14 +182,14 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     sx={{margin:1}} 
                     type='text'
                     name='complement'
-                    value={requestedCep.complemento ? requestedCep.complemento : listFormik.values.complement}
+                    value={listFormik.values.complement}
                     onChange={listFormik.handleChange}
                 />
                 <TextField
                     sx={{margin:1}} 
                     type='text'
                     name='neighborhood'
-                    value={requestedCep.bairro ? requestedCep.bairro : listFormik.values.neighborhood}
+                    value={listFormik.values.neighborhood}
                     onChange={listFormik.handleChange}
                 />
                 <FormControl 
@@ -213,7 +219,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 sx={{margin:1, pb:1}} 
                     type='text'
                     name='city'
-                    value={requestedCep.localidade ? requestedCep.localidade : listFormik.values.city}
+                    value={listFormik.values.city}
                     onChange={listFormik.handleChange}
                 />
                 <Button 
