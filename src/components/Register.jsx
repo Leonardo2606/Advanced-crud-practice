@@ -13,7 +13,7 @@ import * as Yup from 'yup';
 
 const Register = () => {
 
-    const [federalUnits, cnpjMask, cepMask, requestCep, requestedCep] = useMaskAndApi()
+    const [federalUnits, cnpjMask, cepMask, requestCep] = useMaskAndApi()
     
     function formatDate(data) {
         var tempDate = new Date(data);
@@ -281,7 +281,6 @@ const Register = () => {
                             sx={{m: 1, mt:0, width: 250}} 
                             variant='standard' 
                             label='Endereço'
-                            InputLabelProps={{shrink: formik.values.address || requestedCep.logradouro ?true:false}}
                         />
                         <TextField 
                             onChange={formik.handleChange}
@@ -299,7 +298,6 @@ const Register = () => {
                             sx={{m: 1, mt:0}} 
                             variant='standard' 
                             label='Complemento'
-                            InputLabelProps={{shrink: formik.values.complement || requestedCep.complemento ?true:false}}
                         />
                         <TextField 
                             onChange={formik.handleChange}
@@ -309,7 +307,6 @@ const Register = () => {
                             sx={{m: 1, mt:0}} 
                             variant='standard' 
                             label='Bairro'
-                            InputLabelProps={{shrink: formik.values.neighborhood || requestedCep.bairro ?true:false}}
                         />
                         <TextField 
                             onChange={formik.handleChange}
@@ -318,7 +315,6 @@ const Register = () => {
                             sx={{m: 1, mt:0, mb: 1}} 
                             variant='standard' 
                             label='Cidade'
-                            InputLabelProps={{shrink: formik.values.city || requestedCep.localidade ?true:false}}
                         />
                         <FormControl 
                             error={formik.touched.ufSelected && formik.errors.ufSelected ? true : false}

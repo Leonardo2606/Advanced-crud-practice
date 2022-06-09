@@ -20,13 +20,11 @@ function useMaskAndApi() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
-    const [requestedCep, setRequestedCep] = useState({});
     async function requestCep(cepEvent, applyCepInfo) {
         const cep = cepEvent.target.value;
         try{
             if(cep.length === 9) {
                 const response = await cepApi.get(`/${cep}/json`);
-                setRequestedCep(response.data);
                 applyCepInfo(response.data)
             }
         } catch(err){
@@ -55,7 +53,7 @@ function useMaskAndApi() {
         return cep;
     }
 
-    return [federalUnits, cnpjMask, cepMask, requestCep, requestedCep];
+    return [federalUnits, cnpjMask, cepMask, requestCep];
 
 }
 

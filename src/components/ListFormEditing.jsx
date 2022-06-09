@@ -16,7 +16,7 @@ import * as Yup from 'yup';
 const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
 
     const dispatch = useDispatch();
-    const [federalUnits, cnpjMask, cepMask, requestCep, requestedCep] = useMaskAndApi();
+    const [federalUnits, cnpjMask, cepMask, requestCep] = useMaskAndApi();
 
     const todayDate = new Date();
     const listFormik = useFormik({
@@ -94,6 +94,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 <TextField 
                     type='text'
                     name='name'
+                    label='Nome da empresa'
                     sx={{margin:1, gridColumnStart:1, gridColumnEnd:3}}
                     value={listFormik.values.name}
                     onChange={listFormik.handleChange}
@@ -104,6 +105,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 <TextField 
                     type='email'
                     name='email'
+                    label='Email'
                     sx={{margin:1, gridColumnStart:1, gridColumnEnd:3}}
                     value={listFormik.values.email}
                     onChange={listFormik.handleChange}
@@ -114,6 +116,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 <TextField 
                     type='text'
                     name='cnpj'
+                    label='CNPJ'
                     sx={{margin:1}}
                     value={listFormik.values.cnpj}
                     onChange={(e)=>{
@@ -129,6 +132,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 <TextField 
                     type='text'
                     name='document'
+                    label='documento'
                     sx={{margin:1}} 
                     value={listFormik.values.document}
                     onChange={listFormik.handleChange}
@@ -149,6 +153,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     sx={{margin:1}}
                     type='text'
                     name='cep'
+                    label='CEP'
                     value={listFormik.values.cep}
                     onChange={async e=>{
                         try {
@@ -168,6 +173,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     sx={{margin:1}}
                     type='text'
                     name='address'
+                    label='Endereço'
                     value={listFormik.values.address}
                     onChange={listFormik.handleChange}
                 />
@@ -175,6 +181,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     sx={{margin:1}} 
                     type='number'
                     name='number'
+                    label='Número'
                     value={listFormik.values.number}
                     onChange={listFormik.handleChange}
                 />
@@ -182,6 +189,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     sx={{margin:1}} 
                     type='text'
                     name='complement'
+                    label='Complemento'
                     value={listFormik.values.complement}
                     onChange={listFormik.handleChange}
                 />
@@ -189,6 +197,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     sx={{margin:1}} 
                     type='text'
                     name='neighborhood'
+                    label='Bairro'
                     value={listFormik.values.neighborhood}
                     onChange={listFormik.handleChange}
                 />
@@ -219,6 +228,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 sx={{margin:1, pb:1}} 
                     type='text'
                     name='city'
+                    label='Cidade'
                     value={listFormik.values.city}
                     onChange={listFormik.handleChange}
                 />
