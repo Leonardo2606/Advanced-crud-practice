@@ -96,10 +96,10 @@ const Register = () => {
     });
 
     function applyCepInfo(cepResponse) {
-        formik.values.address = cepResponse.logradouro;
-        formik.values.neighborhood = cepResponse.bairro;
-        formik.values.city = cepResponse.localidade;
-        formik.values.complement = cepResponse.complemento;
+        formik.values.address = cepResponse.logradouro || '';
+        formik.values.neighborhood = cepResponse.bairro || '';
+        formik.values.city = cepResponse.localidade || '';
+        formik.values.complement = cepResponse.complemento || '';
     }
 
     return (

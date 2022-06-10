@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import { deleteCompanyAction } from '../redux/companiesReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, IconButton, Tooltip, Paper } from '@mui/material';
+import ListTableCell from './muiCustomComponents/ListTableCell';
 import ListFormEditing from './ListFormEditing';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -65,7 +66,9 @@ const List = () => {
                     </Typography>
                 </Link>    
             </LinkBox>
+
                 <ListFormEditing closeDialogFunc={handleOpenCloseDialog} onOrOff={openClose} empresa={actualEmpresa} idx={actualEmpresaIndex}/>
+
             <TableContainer sx={{overflow:'auto'}} component={Paper}>
                 <Table>
                     <TableHead>
@@ -81,38 +84,15 @@ const List = () => {
                         {empresas.map((empresa, index)  => {
                             return (
                                 <TableRow
-                                    className='trows'
                                     selected
-                                    key={index}>
-                                    <TableCell
-                                        id='nome'
-                                        className='campo'
-                                        sx={{padding:1, paddingLeft:2, height:30}}
-                                    >
-                                        {empresa.name}
-                                    </TableCell>
-                                    <TableCell
-                                        id='email'
-                                        className='campo'
-                                        sx={{padding:1, paddingLeft:2, height:30}}
-                                    >
-                                        {empresa.email}
-                                    </TableCell>
+                                    key={index}
+                                >
+
+                                    <ListTableCell ID='nome' value={empresa.name}/>
+                                    <ListTableCell ID='email' value={empresa.email}/>
+                                    <ListTableCell ID='cep' value={empresa.cep}/>
+                                    <ListTableCell ID='data' value={empresa.data}/>
                                     
-                                    <TableCell 
-                                        id='cep'
-                                        className='campo'
-                                        sx={{padding:1, paddingLeft:2, height:30}}
-                                    >
-                                        {empresa.cep}
-                                    </TableCell>
-                                    <TableCell
-                                        id='data'
-                                        className='campo'
-                                        sx={{padding:1, paddingLeft:2, height:30}}
-                                    >
-                                        {empresa.data}
-                                    </TableCell>
                                     <TableCell id='nonEditable' align='right' sx={{padding:1, paddingLeft:2, height:30}}>
                                         <Tooltip title='Editar'>
                                             <IconButton disabled={openClose} onClick={()=>{
@@ -129,7 +109,6 @@ const List = () => {
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
-
 
                                 </TableRow>
                             )
