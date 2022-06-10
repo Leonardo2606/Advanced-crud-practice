@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TableCell } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 const CustomTableCell = styled(TableCell)(() => ({
     padding: 5,

@@ -3,7 +3,7 @@ import useMaskAndApi from '../custom_hooks/useMaskAndApi';
 import { useDispatch } from 'react-redux';
 import { editCompanyAction } from '../redux/companiesReducer';
 import { FormControl, TextField, Select, MenuItem, 
-    Tooltip, InputLabel, Slide, Paper, Button, duration } from '@mui/material';
+    Tooltip, InputLabel, Slide, Paper, Button } from '@mui/material';
 import { ListFormEdit } from '../style';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
