@@ -3,7 +3,7 @@ import useMaskAndApi from '../custom_hooks/useMaskAndApi';
 import { useDispatch } from 'react-redux';
 import { editCompanyAction } from '../redux/companiesReducer';
 import { FormControl, TextField, Select, MenuItem, 
-    Tooltip, InputLabel, Slide, Paper, Button } from '@mui/material';
+    Tooltip, InputLabel, Slide, Paper, Button, duration } from '@mui/material';
 import { ListFormEdit } from '../style';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -67,10 +67,10 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
     });
 
     function applyCepInfoList(cepResponse) {
-        listFormik.values.address = cepResponse.logradouro;
-        listFormik.values.neighborhood = cepResponse.bairro;
-        listFormik.values.city = cepResponse.localidade;
-        listFormik.values.complement = cepResponse.complemento;
+        listFormik.values.address = cepResponse.logradouro || '';
+        listFormik.values.neighborhood = cepResponse.bairro || '';
+        listFormik.values.city = cepResponse.localidade || '';
+        listFormik.values.complement = cepResponse.complemento || '';
     }
 
     return (
@@ -78,13 +78,25 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
             <Paper 
                 elevation={5}
                 sx={{
-                    width:'50%', 
+                    width:'60%',
                     m:'auto',
                     mb:10,
                     pt:1,
                     pb:2,
                     gridRowStart: 1,
-                    gridColumnStart: 1
+                    gridColumnStart: 1,
+                    '@media(max-width:1220px)':{
+                        width: '70%'
+                    },
+                    '@media(max-width:1080px)':{
+                        width: '80%'
+                    },
+                    '@media(max-width:870px)':{
+                        width: '90%'
+                    },
+                    '@media(max-width:662px)':{
+                        width: '98%'
+                    }
                 }}
             >
             <ListFormEdit onSubmit={(e)=>{

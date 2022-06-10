@@ -69,17 +69,23 @@ export const FormSectionBody = styled.div`
 
 export const ListFormEdit = styled.form`
     margin: auto;
-    width: 70%;
+    width: 80%;
     display: grid;
-    grid-template-columns: 49% 49%;
+    grid-template-columns: 50% 50%;
+    transition: width 0.5s;
+    @media(max-width: 870px) {
+        width: 90%;
+    }
+    @media(max-width: 662px) {
+        width: 100%;
+        margin: 0;
+    }
 `
 
 export const ListaContainer = styled.div`
     width: 80%;
     margin: auto;
     overflow: hidden;
-    displat: grid;
-    grid-template-columns: 1fr;
     @media(max-width: 662px) {
         width: 98%;
         padding: 5px;
