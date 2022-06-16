@@ -9,10 +9,10 @@ const Menu = () => {
 
         <MenuContainer>
             <Link style={{textDecoration: 'none'}} to={'/List'}>
-                <Button variant='contained'>Listar Empresas</Button>
+                <Button sx={{fontSize:'clamp(0.8rem, 2vw, 0.9rem)'}} variant='contained'>Listar Empresas</Button>
             </Link>
             <Link style={{textDecoration:'none'}} to='/Register'>
-                <Button variant='contained'>Cadastrar Empresas</Button>
+                <Button sx={{fontSize:'clamp(0.8rem, 2vw, 0.9rem)'}} variant='contained'>Cadastrar Empresas</Button>
             </Link>
             
         </MenuContainer>

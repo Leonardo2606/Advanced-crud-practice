@@ -2,13 +2,10 @@ import styled from 'styled-components';
 
 export const MenuContainer = styled.div`
     margin: 20px auto;
-    width: 50%;
+    width: clamp(360px, 80%, 1200px);
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     transition: all .50s ease-in-out;
-    @media (max-width: 950px) {
-        width: 80%;
-    }
 `
 
 export const LinkBox = styled.div`
@@ -18,12 +15,8 @@ export const LinkBox = styled.div`
 /////////////////////////////// Cadastro components start ///////////////////////////////////////////
 
 export const RegisterContainer = styled.div`
-    width: 70%;
+    width: clamp(600px,70%,98%);
     margin: auto;
-    @media (max-width: 662px) {
-        width: 98%;
-        padding: 5px;
-    }
 `
 
 export const Form = styled.form`
@@ -68,18 +61,10 @@ export const FormSectionBody = styled.div`
 //////////////////////////////// Lista component start /////////////////////////////////////////
 
 export const ListFormEdit = styled.form`
-    margin: auto;
-    width: 80%;
+    width: 100%;
     display: grid;
     grid-template-columns: 50% 50%;
     transition: width 0.5s;
-    @media(max-width: 870px) {
-        width: 90%;
-    }
-    @media(max-width: 662px) {
-        width: 100%;
-        margin: 0;
-    }
 `
 
 export const ListaContainer = styled.div`
@@ -88,7 +73,6 @@ export const ListaContainer = styled.div`
     overflow: hidden;
     @media(max-width: 662px) {
         width: 98%;
-        padding: 5px;
     }
 `
 

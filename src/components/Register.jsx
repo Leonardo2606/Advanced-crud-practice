@@ -104,12 +104,12 @@ const Register = () => {
 
     return (
         <RegisterContainer>
-            <Slide direction='down' in={checked} mountOnEnter unmountOnExit >
+            <Slide direction='down' in={true} mountOnEnter unmountOnExit >
                 <Alert 
                     severity='success'
                     sx={{
                         width:260,
-                        position:'fixed',
+                        position: 'fixed',
                         left:'40vw',
                         '@media (max-width: 1100px)':{
                             left:'35vw'
@@ -118,7 +118,7 @@ const Register = () => {
                             left:'30vw'
                         },
                         '@media (max-width: 662px)':{
-                            left:'21vw'
+                            left:'14vw'
                         }
                     }}>
                         Empresa cadastrada com sucesso!
@@ -168,8 +168,7 @@ const Register = () => {
                             sx={{
                                 m: 1, 
                                 mr: 1,
-                                width:300, 
-                                '@media(max-width:662px)':{width:'100%'}
+                                width:'clamp(100%, 300px, 800px)', 
                             }} 
                             required 
                             name='name' 

@@ -78,25 +78,13 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
             <Paper 
                 elevation={5}
                 sx={{
-                    width:'60%',
+                    width:'clamp(350px, 60%, 98%)',
                     m:'auto',
                     mb:10,
                     pt:1,
                     pb:2,
                     gridRowStart: 1,
-                    gridColumnStart: 1,
-                    '@media(max-width:1220px)':{
-                        width: '70%'
-                    },
-                    '@media(max-width:1080px)':{
-                        width: '80%'
-                    },
-                    '@media(max-width:870px)':{
-                        width: '90%'
-                    },
-                    '@media(max-width:662px)':{
-                        width: '98%'
-                    }
+                    gridColumnStart: 1
                 }}
             >
             <ListFormEdit onSubmit={(e)=>{
