@@ -104,7 +104,7 @@ const Register = () => {
 
     return (
         <RegisterContainer>
-            <Slide direction='down' in={true} mountOnEnter unmountOnExit >
+            <Slide direction='down' in={checked} mountOnEnter unmountOnExit >
                 <Alert 
                     severity='success'
                     sx={{
