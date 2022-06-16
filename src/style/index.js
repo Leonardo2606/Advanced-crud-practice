@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const MenuContainer = styled.div`
     margin: 20px auto;
-    width: clamp(360px, 80%, 1200px);
+    width: clamp(350px, 80%, 1200px);
     display: flex;
     justify-content: space-evenly;
     transition: all .50s ease-in-out;
@@ -15,13 +15,14 @@ export const LinkBox = styled.div`
 /////////////////////////////// Cadastro components start ///////////////////////////////////////////
 
 export const RegisterContainer = styled.div`
-    width: clamp(600px,70%,98%);
+    width: clamp(350px,70%,98%);
     margin: auto;
 `
 
 export const Form = styled.form`
     width: 100%;
     margin: auto;
+    background-color: white;
 `
 
 export const FormSection = styled.section`
