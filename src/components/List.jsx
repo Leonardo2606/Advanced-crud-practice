@@ -90,7 +90,7 @@ const List = () => {
 
                                     <ListTableCell ID='nome' value={empresa.name}/>
                                     <ListTableCell ID='email' value={empresa.email}/>
-                                    <ListTableCell ID='cep' value={empresa.cep}/>
+                                    <ListTableCell ID='cep' value={empresa.address.cep}/>
                                     <ListTableCell ID='data' value={empresa.data}/>
                                     
                                     <TableCell id='nonEditable' align='right' sx={{padding:1, paddingLeft:2, height:30}}>

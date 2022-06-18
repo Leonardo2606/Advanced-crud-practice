@@ -28,12 +28,7 @@ const Register = () => {
             data:formatDate(values.data),
             cnpj:values.cnpj,
             document:values.document,
-            address:values.address,
-            number:values.number,
-            complement:values.complement,
-            neighborhood:values.neighborhood,
-            ufSelected:values.ufSelected,
-            city:values.city,
+            address:values.address
         }; 
         return {empresaDadosStorage};
     }
@@ -53,18 +48,29 @@ const Register = () => {
         initialValues: {
             name:'',
             email:'',
-            cep:'',
             data:'',
             cnpj:'',
-            document:'',
-            address:'',
-            number:'',
-            complement:'',
-            neighborhood:'',
-            ufSelected:'',
-            city:'',
+            document:'',  
+            address:{
+                streetAddress:'',
+                complement:'',
+                neighborhood:'',
+                city:'',
+                number:'',
+                ufSelected:'',
+                cep:''
+            }
         },
         validationSchema: Yup.object({
+            address: Yup.object({
+                cep: Yup
+                .string()
+                .min(9, 'Cep precisa ter 8 números')
+                .required('Digite um cep'),
+                ufSelected: Yup
+                .string()
+                .required('Selecione o Estado')
+            }),
             email: Yup
                 .string()
                 .email('Email inválido')
@@ -81,13 +87,7 @@ const Register = () => {
                 .date()
                 .max(todayDate, 'Data futura não permitida')
                 .required('Entre uma data válida'),
-            ufSelected: Yup
-                .string()
-                .required('Selecione o Estado'),
-            cep: Yup
-                .string()
-                .min(9, 'Cep precisa ter 8 números')
-                .required('Digite um cep')
+            
         }),
         onSubmit: (values) => {
                 store.dispatch(newCompanyAction(newCompany(values)));
@@ -96,10 +96,12 @@ const Register = () => {
     });
 
     function applyCepInfo(cepResponse) {
-        formik.values.address = cepResponse.logradouro || '';
-        formik.values.neighborhood = cepResponse.bairro || '';
-        formik.values.city = cepResponse.localidade || '';
-        formik.values.complement = cepResponse.complemento || '';
+        formik.setFieldValue('address.streetAddress', cepResponse.logradouro || '');
+        formik.setFieldValue('address.neighborhood', cepResponse.bairro || '');
+        formik.setFieldValue('address.city', cepResponse.localidade || '');
+        formik.setFieldValue('address.complement', cepResponse.complemento || '');
+        formik.setFieldValue('address.ufSelected', cepResponse.uf || '');
+        formik.setFieldValue('address.number', cepResponse.number || '');
     }
 
     return (
@@ -168,7 +170,7 @@ const Register = () => {
                             sx={{
                                 m: 1, 
                                 mr: 1,
-                                width:'clamp(100%, 300px, 800px)', 
+                                width:'clamp(100%, 300px, 500px)', 
                             }} 
                             required 
                             name='name' 
@@ -256,44 +258,41 @@ const Register = () => {
                                 try {
                                     let cep = await requestCep(e, applyCepInfo)
                                     let maskedCep = cepMask(cep)
-                                    formik.setValues(prevValues => ({
-                                        ...prevValues,
-                                        [e.target.name]: maskedCep
-                                    }));
+                                    formik.setFieldValue('address.cep', maskedCep)
                                 } catch(err){console.log(err)}
                             }}
                             onBlur={formik.handleBlur}
-                            value={formik.values.cep}
-                            error={formik.touched.cep && formik.errors.cep ? true : false}
-                            helperText={formik.touched.cep ? formik.errors.cep : null}
+                            value={formik.values.address.cep}
+                            error={formik.touched.address?.cep && formik.errors.address?.cep ? true : false}
+                            helperText={formik.touched.address?.cep ? formik.errors.address?.cep : null}
                             required
                             sx={{m: 1, mt:0, width: 90}}
-                            name='cep'
+                            name='address2.cep'
                             variant='standard' 
                             type='text' 
                             label='CEP'
                         />
                         <TextField 
                             onChange={formik.handleChange}
-                            value={formik.values.address} 
-                            name='address' 
+                            value={formik.values.address.streetAddress} 
+                            name='address.rua' 
                             sx={{m: 1, mt:0, width: 250}} 
                             variant='standard' 
                             label='Endereço'
                         />
                         <TextField 
                             onChange={formik.handleChange}
-                            value={formik.values.number} 
+                            value={formik.values.address.number} 
                             sx={{m: 1, mt:0, width: 70}} 
-                            name='number' 
+                            name='address.number' 
                             variant='standard' 
                             type='number' 
                             label='Numero'
                         />
                         <TextField 
                             onChange={formik.handleChange}
-                            value={formik.values.complement} 
-                            name='complement' 
+                            value={formik.values.address.complement} 
+                            name='address.complement' 
                             sx={{m: 1, mt:0}} 
                             variant='standard' 
                             label='Complemento'
@@ -301,22 +300,22 @@ const Register = () => {
                         <TextField 
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.neighborhood}
-                            name='neighborhood' 
+                            value={formik.values.address.neighborhood}
+                            name='address.neighborhood' 
                             sx={{m: 1, mt:0}} 
                             variant='standard' 
                             label='Bairro'
                         />
                         <TextField 
                             onChange={formik.handleChange}
-                            value={formik.values.city} 
-                            name='city' 
+                            value={formik.values.address.city} 
+                            name='address.city' 
                             sx={{m: 1, mt:0, mb: 1}} 
                             variant='standard' 
                             label='Cidade'
                         />
                         <FormControl 
-                            error={formik.touched.ufSelected && formik.errors.ufSelected ? true : false}
+                            error={formik.touched.address?.ufSelected && formik.errors.address?.ufSelected ? true : false}
                             variant='standard'
                             sx={{mt:1,minWidth:200}}>
                             <InputLabel 
@@ -329,17 +328,17 @@ const Register = () => {
                                 required
                                 variant='standard'
                                 sx={{width:90}}
-                                name='ufSelected'
+                                name='address.ufSelected'
                                 id='ufSelected-Select'
-                                value={formik.values.ufSelected}
+                                value={formik.values.address.ufSelected}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                error={formik.touched.ufSelected && formik.errors.ufSelected ? true : false}>
+                                error={formik.touched.address?.ufSelected && formik.errors.address?.ufSelected ? true : false}>
                                 {federalUnits.map(uf => {
-                                    return <MenuItem key={uf.id} value={uf.nome}>{uf.sigla}</MenuItem> 
+                                    return <MenuItem key={uf.id} value={uf.sigla}>{uf.sigla}</MenuItem> 
                                 })}
                             </Select>
-                            <FormHelperText>{formik.touched.ufSelected ? formik.errors.ufSelected : null}</FormHelperText>
+                            <FormHelperText>{formik.touched.address?.ufSelected ? formik.errors.address?.ufSelected : null}</FormHelperText>
                         </FormControl>
                         
                     </FormSectionBody>

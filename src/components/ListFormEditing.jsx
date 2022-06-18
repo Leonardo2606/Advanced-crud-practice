@@ -24,18 +24,29 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
         initialValues: {
             name:empresa.name,
             email:empresa.email,
-            cep:empresa.cep,
             data:empresa.data,
             cnpj:empresa.cnpj,
             document:empresa.document,
-            address:empresa.address,
-            number:empresa.number,
-            complement:empresa.complement,
-            neighborhood:empresa.neighborhood,
-            ufSelected:empresa.ufSelected,
-            city:empresa.city
+            address:{
+                streetAddress:empresa.address?.streetAddress,
+                complement:empresa.address?.complement,
+                neighborhood:empresa.address?.neighborhood,
+                city:empresa.address?.city,
+                number:empresa.address?.number,
+                ufSelected:empresa.address?.ufSelected,
+                cep:empresa.address?.cep
+            }
         },
         validationSchema: Yup.object({
+            address: Yup.object({
+                cep: Yup
+                .string()
+                .min(9, 'Cep precisa ter 8 números')
+                .required('Digite um cep'),
+                ufSelected: Yup
+                .string()
+                .required('Selecione o Estado')
+            }),
             email: Yup
                 .string()
                 .email('Email inválido')
@@ -51,14 +62,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
             data: Yup
                 .date()
                 .max(todayDate, 'Data futura não permitida')
-                .required('Entre uma data válida'),
-            ufSelected: Yup
-                .string()
-                .required('Selecione o Estado'),
-            cep: Yup
-                .string()
-                .min(9, 'Cep precisa ter 8 números')
-                .required('Digite um cep')
+                .required('Entre uma data válida')
         }),
         onSubmit: (values) => {
                 dispatch(editCompanyAction({valores:values, index:idx}));
@@ -67,10 +71,12 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
     });
 
     function applyCepInfoList(cepResponse) {
-        listFormik.values.address = cepResponse.logradouro || '';
-        listFormik.values.neighborhood = cepResponse.bairro || '';
-        listFormik.values.city = cepResponse.localidade || '';
-        listFormik.values.complement = cepResponse.complemento || '';
+        listFormik.setFieldValue('address.streetAddress', cepResponse.logradouro || '');
+        listFormik.setFieldValue('address.neighborhood', cepResponse.bairro || '');
+        listFormik.setFieldValue('address.city', cepResponse.localidade || '');
+        listFormik.setFieldValue('address.complement', cepResponse.complemento || '');
+        listFormik.setFieldValue('address.ufSelected', cepResponse.uf || '');
+        listFormik.setFieldValue('address.number', cepResponse.number || '');
     }
 
     return (
@@ -100,7 +106,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     onChange={listFormik.handleChange}
                     onBlur={listFormik.handleBlur}
                     error={listFormik.errors.name && listFormik.touched.name ? true : false}
-                    helperText={listFormik.touched ? listFormik.errors.name : null}
+                    helperText={listFormik.touched.name ? listFormik.errors.name : null}
                 />
                 <TextField 
                     type='email'
@@ -111,7 +117,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     onChange={listFormik.handleChange}
                     onBlur={listFormik.handleBlur}
                     error={listFormik.errors.email && listFormik.touched.email ? true : false}
-                    helperText={listFormik.touched ? listFormik.errors.email : null}
+                    helperText={listFormik.touched.email ? listFormik.errors.email : null}
                 />
                 <TextField 
                     type='text'
@@ -127,7 +133,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     }}
                     onBlur={listFormik.handleBlur}
                     error={listFormik.errors.cnpj && listFormik.touched.cnpj ? true : false}
-                    helperText={listFormik.touched ? listFormik.errors.cnpj : null}
+                    helperText={listFormik.touched.cnpj ? listFormik.errors.cnpj : null}
                 />
                 <TextField 
                     type='text'
@@ -152,53 +158,50 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 <TextField
                     sx={{margin:1}}
                     type='text'
-                    name='cep'
+                    name='address.cep'
                     label='CEP'
-                    value={listFormik.values.cep}
+                    value={listFormik.values.address.cep}
                     onChange={async e=>{
                         try {
                             let cep = await requestCep(e, applyCepInfoList)
                             let maskedCep = cepMask(cep)
-                            listFormik.setValues(prevValues => ({
-                                ...prevValues,
-                                [e.target.name]: maskedCep
-                            }))
+                            listFormik.setFieldValue('address.cep', maskedCep)
                         } catch(err){console.log(err)}
                     }}
                     onBlur={listFormik.handleBlur}
-                    error={listFormik.errors.cep && listFormik.touched.cep ? true : false}
-                    helperText={listFormik.touched.cep ? listFormik.errors.cep : null} 
+                    error={listFormik.errors.address?.cep && listFormik.touched.address?.cep ? true : false}
+                    helperText={listFormik.touched.address?.cep ? listFormik.errors.address?.cep : null} 
                 />
                 <TextField
                     sx={{margin:1}}
                     type='text'
-                    name='address'
+                    name='address.streetAddress'
                     label='Endereço'
-                    value={listFormik.values.address}
+                    value={listFormik.values.address.streetAddress}
                     onChange={listFormik.handleChange}
                 />
                 <TextField
                     sx={{margin:1}} 
                     type='number'
-                    name='number'
+                    name='address.number'
                     label='Número'
-                    value={listFormik.values.number}
+                    value={listFormik.values.address.number}
                     onChange={listFormik.handleChange}
                 />
                 <TextField
                     sx={{margin:1}} 
                     type='text'
-                    name='complement'
+                    name='address.complement'
                     label='Complemento'
-                    value={listFormik.values.complement}
+                    value={listFormik.values.address.complement}
                     onChange={listFormik.handleChange}
                 />
                 <TextField
                     sx={{margin:1}} 
                     type='text'
-                    name='neighborhood'
+                    name='address.neighborhood'
                     label='Bairro'
-                    value={listFormik.values.neighborhood}
+                    value={listFormik.values.address.neighborhood}
                     onChange={listFormik.handleChange}
                 />
                 <FormControl 
@@ -213,23 +216,23 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                         <Select
                             variant='standard'
                             sx={{width:90}}
-                            name='ufSelected'
+                            name='address.ufSelected'
                             id='ufSelected-Select'
-                            value={listFormik.values.ufSelected}
+                            value={listFormik.values.address.ufSelected}
                             onChange={listFormik.handleChange}
                             onBlur={listFormik.handleBlur}
                         >
                             {federalUnits.map(uf => {
-                                return <MenuItem key={uf.id} value={uf.nome}>{uf.sigla}</MenuItem> 
+                                return <MenuItem key={uf.id} value={uf.sigla}>{uf.sigla}</MenuItem> 
                             })}
                         </Select>
                 </FormControl>
                 <TextField
                 sx={{margin:1, pb:1}} 
                     type='text'
-                    name='city'
+                    name='address.city'
                     label='Cidade'
-                    value={listFormik.values.city}
+                    value={listFormik.values.address.city}
                     onChange={listFormik.handleChange}
                 />
                 <Button 
