@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import { deleteCompany, getCompanies } from '../redux/companiesReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, IconButton, Tooltip, Paper } from '@mui/material';
+import kappa from '../assets/kappa.png'
 import ListTableCell from './muiCustomComponents/ListTableCell';
 import ListFormEditing from './ListFormEditing';
 import Table from '@mui/material/Table';
@@ -88,7 +89,13 @@ const List = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {empresas.map((empresa, index)  => {
+                        { empresasStatus === 'loading'
+                            ?   (
+                                    <TableRow sx={{height:62}}>
+                                        <TableCell sx={{color:'white', textShadow:'1px 1px 10px black', background:`url(${kappa}) center/50px 60px no-repeat`}} align='center' colSpan={5}>Loading</TableCell>
+                                    </TableRow>
+                                )
+                            : empresas.map((empresa, index)  => {
                             return (
                                 <TableRow
                                     selected

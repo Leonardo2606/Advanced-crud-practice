@@ -31,7 +31,7 @@ export const deleteCompany = createAsyncThunk('companies/deleteCompany', async (
 })
 export const updateCompany = createAsyncThunk('companies/updateCompany', async (payload) => {
     try {
-        const response = await axios.put(`${companiesURL}/${payload.company.id}`, payload.company);
+        await axios.put(`${companiesURL}/${payload.company.id}`, payload.company);
         return payload; /* aqui retorno o payload por conter o index da empresa dentro do state empresasArrayStorage, 
                                                         para substitui-lo pela empresa editada.*/
     } catch (err) {
