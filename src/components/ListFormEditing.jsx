@@ -1,7 +1,7 @@
 import React from 'react';
 import useMaskAndApi from '../custom_hooks/useMaskAndApi';
 import { useDispatch } from 'react-redux';
-import { editCompanyAction } from '../redux/companiesReducer';
+import { updateCompany } from '../redux/companiesReducer';
 import { FormControl, TextField, Select, MenuItem, 
     Tooltip, InputLabel, Slide, Paper, Button } from '@mui/material';
 import { ListFormEdit } from '../style';
@@ -10,18 +10,33 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-
-
-
 const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
 
     const dispatch = useDispatch();
     const [federalUnits, cnpjMask, cepMask, requestCep] = useMaskAndApi();
 
+    function formatDate(data) {
+        var tempDate = new Date(data);
+        var formattedDate = [tempDate.getDate()+1, tempDate.getMonth()+1, tempDate.getFullYear()].join(` / `);
+        return formattedDate
+    }
+    function companyUpdated(values) {
+        return {
+            id:values.id,
+            name:values.name,
+            email:values.email,
+            data:formatDate(values.data),
+            cnpj:values.cnpj,
+            document:values.document,
+            address:values.address
+        }; 
+    }
+
     const todayDate = new Date();
     const listFormik = useFormik({
         enableReinitialize:true,
         initialValues: {
+            id:empresa.id,
             name:empresa.name,
             email:empresa.email,
             data:empresa.data,
@@ -65,8 +80,12 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 .required('Entre uma data válida')
         }),
         onSubmit: (values) => {
-                dispatch(editCompanyAction({valores:values, index:idx}));
+            try {
+                dispatch(updateCompany({company:companyUpdated(values), idx})).unwrap();
                 closeDialogFunc();
+            } catch (err) {
+                console.log(err);
+            }     
         },
     });
 

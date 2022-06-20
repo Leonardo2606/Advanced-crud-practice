@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ListaContainer, LinkBox } from '../style';
 import {Link} from 'react-router-dom';
-import { deleteCompanyAction } from '../redux/companiesReducer';
+import { deleteCompany, getCompanies } from '../redux/companiesReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, IconButton, Tooltip, Paper } from '@mui/material';
 import ListTableCell from './muiCustomComponents/ListTableCell';
@@ -22,6 +22,13 @@ const List = () => {
 
     const dispatch = useDispatch();
     const empresas = useSelector(state => state.companies.empresasArrayStorage);
+    const empresasStatus = useSelector(state => state.companies.status);
+
+    useEffect(()=>{
+        if(empresasStatus === 'idle') {
+            dispatch(getCompanies())
+        }
+    }, [empresasStatus, dispatch])
 
     //////////////////////////////////////////////////////
     const [openClose, setOpenClose] = useState(false);
@@ -103,7 +110,11 @@ const List = () => {
                                         </Tooltip>
                                         <Tooltip title='Deletar'>
                                             <IconButton disabled={openClose} onClick={()=>{
-                                                dispatch(deleteCompanyAction(index));
+                                                try {
+                                                    dispatch(deleteCompany(empresa.id)).unwrap();
+                                                } catch (err) {
+                                                    console.log(err);
+                                                }
                                             }}>
                                                 <DeleteIcon />
                                             </IconButton>

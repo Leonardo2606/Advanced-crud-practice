@@ -7,13 +7,12 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
 import useMaskAndApi from '../custom_hooks/useMaskAndApi';
 import store from '../redux/store'
-import { newCompanyAction } from '../redux/companiesReducer';
+import { addNewCompany } from '../redux/companiesReducer';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const Register = () => {
-
-    const [federalUnits, cnpjMask, cepMask, requestCep] = useMaskAndApi()
+    const [federalUnits, cnpjMask, cepMask, requestCep] = useMaskAndApi();
     
     function formatDate(data) {
         var tempDate = new Date(data);
@@ -21,16 +20,14 @@ const Register = () => {
         return formattedDate
     }
     function newCompany(values) {
-        const empresaDadosStorage = {
+        return {
             name:values.name,
             email:values.email,
-            cep:values.cep,
             data:formatDate(values.data),
             cnpj:values.cnpj,
             document:values.document,
             address:values.address
         }; 
-        return {empresaDadosStorage};
     }
 
     //////////////////////////////////////////////////////
@@ -90,8 +87,12 @@ const Register = () => {
             
         }),
         onSubmit: (values) => {
-                store.dispatch(newCompanyAction(newCompany(values)));
+            try{
+                store.dispatch(addNewCompany(newCompany(values))).unwrap();
                 handleSuccessAlert();
+            } catch(err) {
+                console.error(err);
+            }   
         },
     });
 
