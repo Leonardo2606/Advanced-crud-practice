@@ -4,7 +4,7 @@ import { FormControl, FormHelperText, TextField, Select, MenuItem, Typography, I
 import {Form, FormSection, FormSectionHeader, FormSectionBody, RegisterContainer,
     LinkBox} from '../style';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useMaskAndApi from '../custom_hooks/useMaskAndApi';
 import store from '../redux/store'
 import { addNewCompany } from '../redux/companiesReducer';
@@ -25,13 +25,14 @@ const Register = () => {
             email:values.email,
             data:formatDate(values.data),
             cnpj:values.cnpj,
-            document:values.document,
+            slogan:values.slogan,
             address:values.address
         }; 
     }
 
     //////////////////////////////////////////////////////
 
+    const navigate = useNavigate();
     const todayDate = new Date();
     const [checked, setChecked] = useState(false);
     function handleSuccessAlert(){
@@ -47,7 +48,7 @@ const Register = () => {
             email:'',
             data:'',
             cnpj:'',
-            document:'',  
+            slogan:'',  
             address:{
                 streetAddress:'',
                 complement:'',
@@ -92,7 +93,9 @@ const Register = () => {
                 handleSuccessAlert();
             } catch(err) {
                 console.error(err);
-            }   
+            } finally {
+                navigate('/')
+            }
         },
     });
 
@@ -129,7 +132,7 @@ const Register = () => {
             </Slide>
 
             <LinkBox>
-                <Link style={{textDecoration: 'none'}} to={'/List'}>
+                <Link style={{textDecoration: 'none'}} to={'/'}>
                     <Typography  
                         color={'white'} 
                         variant='p'>
@@ -161,7 +164,7 @@ const Register = () => {
                                 Salvar
                         </Button>
                     </FormSectionHeader>
-                    <FormSectionBody>
+                    <FormSectionBody style={{paddingBottom:3}}>
                         <TextField 
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -217,12 +220,12 @@ const Register = () => {
                         />
                         <TextField 
                             onChange={formik.handleChange}
-                            value={formik.values.document}
+                            value={formik.values.slogan}
                             sx={{m: 1}} 
-                            name='document' 
+                            name='slogan' 
                             variant='standard' 
-                            label='Documento' 
-                            type='file'
+                            label='Slogan' 
+                            type='text'
                         />
                         <InputLabel 
                             sx={{display:'flex', alignItems:'center', width:300}}
@@ -240,7 +243,7 @@ const Register = () => {
                                 name='data'  
                                 variant='standard'
                                 type='date'
-                                sx={{m:1}}
+                                sx={{mt:3}}
                             />
                         </InputLabel>
                     </FormSectionBody>
@@ -268,7 +271,7 @@ const Register = () => {
                             helperText={formik.touched.address?.cep ? formik.errors.address?.cep : null}
                             required
                             sx={{m: 1, mt:0, width: 90}}
-                            name='address2.cep'
+                            name='address.cep'
                             variant='standard' 
                             type='text' 
                             label='CEP'
@@ -276,7 +279,7 @@ const Register = () => {
                         <TextField 
                             onChange={formik.handleChange}
                             value={formik.values.address.streetAddress} 
-                            name='address.rua' 
+                            name='address.streetAddress' 
                             sx={{m: 1, mt:0, width: 250}} 
                             variant='standard' 
                             label='Endereço'
