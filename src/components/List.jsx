@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ListaContainer, LinkBox } from '../style';
+import { ListaContainer } from '../style';
 import {Link} from 'react-router-dom';
 import { deleteCompany, getCompanies } from '../redux/companiesReducer';
 import { useSelector, useDispatch } from 'react-redux';
-import { Typography, IconButton, Tooltip, Paper } from '@mui/material';
+import { IconButton, Tooltip, Paper } from '@mui/material';
 import kappa from '../assets/kappa.png'
 import ListTableCell from './muiCustomComponents/ListTableCell';
 import ListFormEditing from './ListFormEditing';
@@ -13,7 +13,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
