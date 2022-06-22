@@ -3,7 +3,6 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import Menu from "./components/Menu";
 import Register from './components/Register';
 import List from "./components/List";
 import {Provider} from 'react-redux';
@@ -14,9 +13,8 @@ function App() {
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<Menu />}/>
+          <Route path='/' element={<List />}/>
           <Route path='/Register' element={<Register />}/>
-          <Route path='/List' element={<List />}/>
         </Routes>
       </Router>   
     </Provider>

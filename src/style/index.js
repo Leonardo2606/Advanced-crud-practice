@@ -1,13 +1,5 @@
 import styled from 'styled-components';
 
-export const MenuContainer = styled.div`
-    margin: 20px auto;
-    width: clamp(350px, 80%, 1200px);
-    display: flex;
-    justify-content: space-evenly;
-    transition: all .50s ease-in-out;
-`
-
 export const LinkBox = styled.div`
     margin: 5px 0 8px 0;
 `
@@ -70,7 +62,7 @@ export const ListFormEdit = styled.form`
 
 export const ListaContainer = styled.div`
     width: 80%;
-    margin: auto;
+    margin: 25px auto 0 auto;
     overflow: hidden;
     @media(max-width: 662px) {
         width: 98%;
