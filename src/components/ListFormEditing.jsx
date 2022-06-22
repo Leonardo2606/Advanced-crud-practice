@@ -27,7 +27,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
             email:values.email,
             data:formatDate(values.data),
             cnpj:values.cnpj,
-            document:values.document,
+            slogan:values.slogan,
             address:values.address
         }; 
     }
@@ -41,7 +41,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
             email:empresa.email,
             data:empresa.data,
             cnpj:empresa.cnpj,
-            document:empresa.document,
+            slogan:empresa.slogan,
             address:{
                 streetAddress:empresa.address?.streetAddress,
                 complement:empresa.address?.complement,
@@ -124,8 +124,8 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     value={listFormik.values.name}
                     onChange={listFormik.handleChange}
                     onBlur={listFormik.handleBlur}
-                    error={listFormik.errors.name && listFormik.touched.name ? true : false}
-                    helperText={listFormik.touched.name ? listFormik.errors.name : null}
+                    error={listFormik.errors.name ? true : false}
+                    helperText={listFormik.errors.name ? listFormik.errors.name : null}
                 />
                 <TextField 
                     type='email'
@@ -135,8 +135,8 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     value={listFormik.values.email}
                     onChange={listFormik.handleChange}
                     onBlur={listFormik.handleBlur}
-                    error={listFormik.errors.email && listFormik.touched.email ? true : false}
-                    helperText={listFormik.touched.email ? listFormik.errors.email : null}
+                    error={listFormik.errors.email ? true : false}
+                    helperText={listFormik.errors.email ? listFormik.errors.email : null}
                 />
                 <TextField 
                     type='text'
@@ -151,15 +151,15 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                         }))
                     }}
                     onBlur={listFormik.handleBlur}
-                    error={listFormik.errors.cnpj && listFormik.touched.cnpj ? true : false}
-                    helperText={listFormik.touched.cnpj ? listFormik.errors.cnpj : null}
+                    error={listFormik.errors.cnpj ? true : false}
+                    helperText={listFormik.errors.cnpj ? listFormik.errors.cnpj : null}
                 />
                 <TextField 
                     type='text'
-                    name='document'
-                    label='documento'
+                    name='slogan'
+                    label='Slogan'
                     sx={{margin:1}} 
-                    value={listFormik.values.document}
+                    value={listFormik.values.slogan}
                     onChange={listFormik.handleChange}
                 />
                 <TextField 
@@ -171,8 +171,8 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     value={listFormik.values.data}
                     onChange={listFormik.handleChange}
                     onBlur={listFormik.handleBlur}
-                    error={listFormik.errors.data && listFormik.touched.data ? true : false}
-                    helperText={listFormik.touched.data ? listFormik.errors.data : null}
+                    error={listFormik.errors.data ? true : false}
+                    helperText={listFormik.errors.data ? listFormik.errors.data : null}
                 />
                 <TextField
                     sx={{margin:1}}
@@ -188,8 +188,9 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                         } catch(err){console.log(err)}
                     }}
                     onBlur={listFormik.handleBlur}
-                    error={listFormik.errors.address?.cep && listFormik.touched.address?.cep ? true : false}
-                    helperText={listFormik.touched.address?.cep ? listFormik.errors.address?.cep : null} 
+                    error={listFormik.errors.address?.cep ? true : false}
+                    helperText={listFormik.errors.address?.cep ? listFormik.errors.address?.cep : null} 
+                    
                 />
                 <TextField
                     sx={{margin:1}}
@@ -240,6 +241,11 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                             value={listFormik.values.address.ufSelected}
                             onChange={listFormik.handleChange}
                             onBlur={listFormik.handleBlur}
+                            error={listFormik.errors.address?.ufSelected ? true : false}
+                            helperText={listFormik.errors.address?.ufSelected 
+                                ? listFormik.errors.address?.ufSelected
+                                : null
+                            }
                         >
                             {federalUnits.map(uf => {
                                 return <MenuItem key={uf.id} value={uf.sigla}>{uf.sigla}</MenuItem> 
@@ -262,7 +268,9 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                         m:'auto'
                     }}
                     variant='contained'
-                    type='submit'>
+                    type='submit'
+                    disabled={listFormik.isValid === true ? false : true}
+                >
                     <Tooltip 
                         sx={{width:'100%', borderRadius:0}} 
                         title='Salvar'>

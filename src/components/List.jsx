@@ -61,21 +61,8 @@ const List = () => {
 
     return (
         <ListaContainer>
-            <LinkBox>
-                <Link style={{textDecoration: 'none'}} to={'/'}>
-                    <Typography sx={{color: 'white'}} variant='p'>
-                        <Tooltip title='Retornar'>
-                                <IconButton sx={{color: 'white', m:0, p:0}}>
-                                    <ArrowBackIosIcon viewBox='-5 0 24 24'/>
-                                </IconButton>
-                        </Tooltip>
-                        Menu /{' '}
-                        <Typography fontWeight={'bold'} variant='button'>Lista de Empresas</Typography>
-                    </Typography>
-                </Link>    
-            </LinkBox>
 
-                <ListFormEditing closeDialogFunc={handleOpenCloseDialog} onOrOff={openClose} empresa={actualEmpresa} idx={actualEmpresaIndex}/>
+            <ListFormEditing closeDialogFunc={handleOpenCloseDialog} onOrOff={openClose} empresa={actualEmpresa} idx={actualEmpresaIndex}/>
 
             <TableContainer sx={{overflow:'auto'}} component={Paper}>
                 <Table>
@@ -159,3 +146,19 @@ const List = () => {
 }
 
 export default List;
+
+
+
+/*<LinkBox>
+                <Link style={{textDecoration: 'none'}} to={'/'}>
+                    <Typography sx={{color: 'white'}} variant='p'>
+                        <Tooltip title='Retornar'>
+                                <IconButton sx={{color: 'white', m:0, p:0}}>
+                                    <ArrowBackIosIcon viewBox='-5 0 24 24'/>
+                                </IconButton>
+                        </Tooltip>
+                        Menu /{' '}
+                        <Typography fontWeight={'bold'} variant='button'>Lista de Empresas</Typography>
+                    </Typography>
+                </Link>    
+            </LinkBox>*/
