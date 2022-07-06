@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ListaContainer } from '../style';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { deleteCompany, getCompanies } from '../redux/companiesReducer';
 import { useSelector, useDispatch } from 'react-redux';
-import { IconButton, Tooltip, Paper } from '@mui/material';
-import kappa from '../assets/kappa.png'
+import { IconButton, Tooltip, Paper, Alert, Slide } from '@mui/material';
 import ListTableCell from './muiCustomComponents/ListTableCell';
 import ListFormEditing from './ListFormEditing';
 import Table from '@mui/material/Table';
@@ -21,38 +20,39 @@ import EditIcon from '@mui/icons-material/Edit';
 const List = () => {
 
     const dispatch = useDispatch();
-    const empresas = useSelector(state => state.companies.empresasArrayStorage);
+    const {empresasArrayStorage: companies, listAlert, editingStatus} = useSelector(state => state.companies);
     const empresasStatus = useSelector(state => state.companies.status);
 
     useEffect(()=>{
         if(empresasStatus === 'idle') {
-            dispatch(getCompanies())
+            dispatch(getCompanies());
         }
     }, [empresasStatus, dispatch])
 
     //////////////////////////////////////////////////////
+
     const [openClose, setOpenClose] = useState(false);
-    function handleOpenCloseDialog() {
+    function handleEditingSwitch() {          //// This function opens the ListFormEditing component.
         setOpenClose(prev => !prev)
     }
-    function dateFormatPromisse(empresa) {
+    function dateFormatPromisse(company) {
         return new Promise((resolve, reject) => {
-            let updateEmpresa = empresa;
-            let empresaDateFormatted = empresa.data.split(' / ').reverse().join('-');
-            let inputEditDate = new Date(empresaDateFormatted);
-            updateEmpresa = {...updateEmpresa, data:inputEditDate.toISOString().split('T')[0]}
-            resolve(updateEmpresa);
+            let updateCompany= company;
+            let formattedDateCompany = company.data.split(' / ').reverse().join('-');
+            let inputEditDate = new Date(formattedDateCompany);
+            updateCompany = {...updateCompany, data:inputEditDate.toISOString().split('T')[0]}
+            resolve(updateCompany);
             reject('Não foi possivel formatar a data');
         })
     }
     const [actualEmpresa, setActualEmpresa] = useState({});
     const [actualEmpresaIndex, setActualEmpresaIndex] = useState();
-     function changeEmpresa(empresa, index) {
-        dateFormatPromisse(empresa)
+    function changeCompany(company, index) {
+        dateFormatPromisse(company)
         .then((updatedEmpresa)=>{
             setActualEmpresa(updatedEmpresa);
             setActualEmpresaIndex(index);
-            handleOpenCloseDialog();
+            handleEditingSwitch();
         })
         .catch((err)=>console.log(err));
     }
@@ -60,8 +60,22 @@ const List = () => {
 
     return (
         <ListaContainer>
+          
+            <Slide direction='down' in={listAlert} mountOnEnter unmountOnExit >
+                <Alert 
+                    severity='success'
+                    sx={{
+                        width:260,
+                        margin: '10px auto',
+                    }}>
+                        {editingStatus === 'loading' ? 'Loading'
+                            : editingStatus === 'success' ? 'Empresa Editada' 
+                            : 'Nova Empresa Adicionada!'
+                        }
+                </Alert>
+            </Slide>
 
-            <ListFormEditing closeDialogFunc={handleOpenCloseDialog} onOrOff={openClose} empresa={actualEmpresa} idx={actualEmpresaIndex}/>
+            <ListFormEditing editingSwitch={handleEditingSwitch} onOrOff={openClose} empresa={actualEmpresa} idx={actualEmpresaIndex}/>
 
             <TableContainer sx={{overflow:'auto'}} component={Paper}>
                 <Table>
@@ -69,34 +83,38 @@ const List = () => {
                         <TableRow>
                             <TableCell sx={{fontWeight: 'bold', minWidth:150}}>Nome</TableCell>
                             <TableCell sx={{fontWeight: 'bold', minWidth:150}}>Email</TableCell>
-                            <TableCell sx={{fontWeight: 'bold', minWidth:100}}>CEP</TableCell>
-                            <TableCell sx={{fontWeight: 'bold', minWidth:100}}>Data de abertura</TableCell>
-                            <TableCell ></TableCell>
+                            <TableCell sx={{fontWeight: 'bold', minWidth:150}}>CEP</TableCell>
+                            <TableCell sx={{fontWeight: 'bold', minWidth:150}}>Data de abertura</TableCell>
+                            <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         { empresasStatus === 'loading'
                             ?   (
                                     <TableRow sx={{height:62}}>
-                                        <TableCell sx={{color:'white', textShadow:'1px 1px 10px black', background:`url(${kappa}) center/50px 60px no-repeat`}} align='center' colSpan={5}>Loading</TableCell>
+                                        <TableCell>Loading</TableCell>
+                                        <TableCell>Loading</TableCell>
+                                        <TableCell>Loading</TableCell>
+                                        <TableCell>Loading</TableCell>
+                                        <TableCell>Loading</TableCell>
                                     </TableRow>
                                 )
-                            : empresas.map((empresa, index)  => {
+                            : companies.map((company, index)  => {
                             return (
                                 <TableRow
                                     selected
                                     key={index}
                                 >
 
-                                    <ListTableCell ID='nome' value={empresa.name}/>
-                                    <ListTableCell ID='email' value={empresa.email}/>
-                                    <ListTableCell ID='cep' value={empresa.address.cep}/>
-                                    <ListTableCell ID='data' value={empresa.data}/>
+                                    <ListTableCell ID='nome' value={company.name}/>
+                                    <ListTableCell ID='email' value={company.email}/>
+                                    <ListTableCell ID='cep' value={company.address.cep}/>
+                                    <ListTableCell ID='data' value={company.data}/>
                                     
                                     <TableCell id='nonEditable' align='right' sx={{padding:1, paddingLeft:2, height:30}}>
                                         <Tooltip title='Editar'>
                                             <IconButton disabled={openClose} onClick={()=>{
-                                                changeEmpresa(empresa, index);
+                                                changeCompany(company, index);
                                             }}>
                                                 <EditIcon />
                                             </IconButton>
@@ -104,7 +122,7 @@ const List = () => {
                                         <Tooltip title='Deletar'>
                                             <IconButton disabled={openClose} onClick={()=>{
                                                 try {
-                                                    dispatch(deleteCompany(empresa.id)).unwrap();
+                                                    dispatch(deleteCompany(company.id)).unwrap();
                                                 } catch (err) {
                                                     console.log(err);
                                                 }

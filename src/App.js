@@ -1,7 +1,7 @@
 import {
   HashRouter as Router,
   Routes,
-  Route
+  Route,
 } from "react-router-dom";
 import Register from './components/Register';
 import List from "./components/List";
@@ -13,7 +13,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path='/' element={<List />}/>
+          <Route path='/'  element={<List />}/>
           <Route path='/Register' element={<Register />}/>
         </Routes>
       </Router>   

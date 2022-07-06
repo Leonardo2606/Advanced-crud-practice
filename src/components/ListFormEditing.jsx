@@ -1,7 +1,7 @@
 import React from 'react';
 import useMaskAndApi from '../custom_hooks/useMaskAndApi';
 import { useDispatch } from 'react-redux';
-import { updateCompany } from '../redux/companiesReducer';
+import { updateCompany, closeListAlert } from '../redux/companiesReducer';
 import { FormControl, TextField, Select, MenuItem, 
     Tooltip, InputLabel, Slide, Paper, Button } from '@mui/material';
 import { ListFormEdit } from '../style';
@@ -10,7 +10,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
+const ListFormEditing = ({editingSwitch, onOrOff, empresa, idx}) => {
 
     const dispatch = useDispatch();
     const [federalUnits, cnpjMask, cepMask, requestCep] = useMaskAndApi();
@@ -57,10 +57,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 cep: Yup
                 .string()
                 .min(9, 'Cep precisa ter 8 números')
-                .required('Digite um cep'),
-                ufSelected: Yup
-                .string()
-                .required('Selecione o Estado')
+                .required('Digite um cep')
             }),
             email: Yup
                 .string()
@@ -79,10 +76,13 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                 .max(todayDate, 'Data futura não permitida')
                 .required('Entre uma data válida')
         }),
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             try {
-                dispatch(updateCompany({company:companyUpdated(values), idx})).unwrap();
-                closeDialogFunc();
+                await dispatch(updateCompany({company:companyUpdated(values), idx})).unwrap();
+                setTimeout(()=>{
+                    dispatch(closeListAlert());
+                }, 3000)
+                editingSwitch();
             } catch (err) {
                 console.log(err);
             }     
@@ -240,12 +240,6 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                             id='ufSelected-Select'
                             value={listFormik.values.address.ufSelected}
                             onChange={listFormik.handleChange}
-                            onBlur={listFormik.handleBlur}
-                            error={listFormik.errors.address?.ufSelected ? true : false}
-                            helperText={listFormik.errors.address?.ufSelected 
-                                ? listFormik.errors.address?.ufSelected
-                                : null
-                            }
                         >
                             {federalUnits.map(uf => {
                                 return <MenuItem key={uf.id} value={uf.sigla}>{uf.sigla}</MenuItem> 
@@ -288,7 +282,7 @@ const ListFormEditing = ({closeDialogFunc, onOrOff, empresa, idx}) => {
                     color='error'
                     onClick={()=>{
                     listFormik.setValues(()=>({...empresa}));
-                    closeDialogFunc();
+                    editingSwitch();
                     }}>
                     <Tooltip 
                         sx={{width:'100%', borderRadius:0}}
