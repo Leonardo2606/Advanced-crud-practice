@@ -6,12 +6,14 @@ import {Form, FormSection, FormSectionHeader, FormSectionBody, RegisterContainer
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link, useNavigate } from 'react-router-dom';
 import useMaskAndApi from '../custom_hooks/useMaskAndApi';
-import store from '../redux/store'
-import { addNewCompany } from '../redux/companiesReducer';
+import { useDispatch } from 'react-redux';
+import { addNewCompany, closeListAlert } from '../redux/companiesReducer';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const Register = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [federalUnits, cnpjMask, cepMask, requestCep] = useMaskAndApi();
     
     function formatDate(data) {
@@ -32,16 +34,9 @@ const Register = () => {
 
     //////////////////////////////////////////////////////
 
-    const navigate = useNavigate();
+    const [loadingChecked, setLoadingChecked] = useState(false);
+    
     const todayDate = new Date();
-    const [checked, setChecked] = useState(false);
-    function handleSuccessAlert(){
-        setChecked(prev => !prev)
-        setTimeout(()=>{
-            setChecked(prev => !prev)
-        }, 4000) 
-    }
-
     const formik = useFormik({
         initialValues: {
             name:'',
@@ -87,14 +82,17 @@ const Register = () => {
                 .required('Entre uma data válida'),
             
         }),
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             try{
-                store.dispatch(addNewCompany(newCompany(values))).unwrap();
-                handleSuccessAlert();
+                setLoadingChecked(true);
+                await dispatch(addNewCompany(newCompany(values))).unwrap();
+                setTimeout(()=>{    
+                    dispatch(closeListAlert())
+                }, 3000)
+                navigate('/');
+                setLoadingChecked(false);
             } catch(err) {
                 console.error(err);
-            } finally {
-                navigate('/')
             }
         },
     });
@@ -110,7 +108,7 @@ const Register = () => {
 
     return (
         <RegisterContainer>
-            <Slide direction='down' in={checked} mountOnEnter unmountOnExit >
+            <Slide direction='down' in={loadingChecked} mountOnEnter unmountOnExit >
                 <Alert 
                     severity='success'
                     sx={{
@@ -127,7 +125,7 @@ const Register = () => {
                             left:'14vw'
                         }
                     }}>
-                        Empresa cadastrada com sucesso!
+                        Loading!
                 </Alert>
             </Slide>
 
