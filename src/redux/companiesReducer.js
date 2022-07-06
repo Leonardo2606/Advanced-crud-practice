@@ -32,27 +32,29 @@ export const deleteCompany = createAsyncThunk('companies/deleteCompany', async (
 export const updateCompany = createAsyncThunk('companies/updateCompany', async (payload) => {
     try {
         await axios.put(`${companiesURL}/${payload.company.id}`, payload.company);
-        return payload; /* aqui retorno o payload por conter o index da empresa dentro do state empresasArrayStorage, 
-                                                        para substitui-lo pela empresa editada.*/
-    } catch (err) {
-        console.log(err)
-    }
+        return payload;      // here the payload is returned because he contains the index of the company that is inside 
+    } catch (err) {          // the state empresasArrayStorage so it can be used to replace the old company with the edited company in the redux state.
+        console.log(err)    
+}                                                  
 })
 
 ///////////////////////////////////////////// Async thunk functions - end ///////////////////////////////////////////////////
 
 const initialState = {
     status: 'idle',
+    editingStatus:'idle',
+    listAlert: false,
     empresasArrayStorage:[]
 }
 const companiesSlice = createSlice({
     name: 'companies',
     initialState: initialState,
     reducers: {
-        /*newCompanyAction (state, action) {
-            state.empresasArrayStorage = [...state.empresasArrayStorage, action.payload.empresaDadosStorage];
-            console.log(state.empresasArrayStorage);
+        closeListAlert (state, action) {
+            state.listAlert = false
+            state.editingStatus = 'idle'
         }
+        /*
         deleteCompanyAction (state, action) {
             state.empresasArrayStorage = state.empresasArrayStorage.filter((empresa, idx) => idx !== action.payload);
         },
@@ -74,20 +76,26 @@ const companiesSlice = createSlice({
                 state.status = 'loading'
             })
             .addCase(getCompanies.fulfilled, (state, action) => {
-                state.status = 'success'
                 state.empresasArrayStorage = state.empresasArrayStorage.concat(action.payload);
+                state.status = 'success'
             })
             .addCase(addNewCompany.fulfilled, (state, action) => {
                 state.empresasArrayStorage.push(action.payload);
+                state.listAlert = true
             })
             .addCase(deleteCompany.fulfilled, (state, action) => {
                 state.empresasArrayStorage = state.empresasArrayStorage.filter((company) => company.id !== action.payload.id);
             })
+            .addCase(updateCompany.pending, (state, action) => {
+                state.editingStatus = 'loading'
+                state.listAlert = true
+            })
             .addCase(updateCompany.fulfilled, (state, action) => {
-                state.empresasArrayStorage.splice(action.payload.idx, 1, action.payload.company);
+                state.empresasArrayStorage.splice(action.payload.idx, 1, action.payload.company);  // the idx(index) it's used here.
+                state.editingStatus = 'success'
             })
     }
 })
 
-//export const {deleteCompanyAction, editCompanyAction} = companiesSlice.actions;
+export const {closeListAlert} = companiesSlice.actions;
 export default companiesSlice.reducer;
