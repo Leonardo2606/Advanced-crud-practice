@@ -10,7 +10,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const ListFormEditing = ({editingSwitch, onOrOff, empresa, idx}) => {
+const ListFormEditing = ({editingSwitch, onOrOff, empresa, idx, editedRow}) => {
 
     const dispatch = useDispatch();
     const [federalUnits, cnpjMask, cepMask, requestCep] = useMaskAndApi();
@@ -98,8 +98,20 @@ const ListFormEditing = ({editingSwitch, onOrOff, empresa, idx}) => {
         listFormik.setFieldValue('address.number', cepResponse.number || '');
     }
 
+    
+
     return (
-        <Slide direction='down' in={onOrOff} mountOnEnter unmountOnExit>
+        <Slide 
+            onEnter={(e)=>{
+                e.scrollIntoView({block:'center'})
+            }} 
+            onExit={()=>{
+                editedRow.current.children[idx].scrollIntoView({block:'center', behavior:'smooth'});
+                editedRow.current.children[idx].style.animation = 'bgC 4s'
+                setTimeout(()=>{
+                    editedRow.current.children[idx].style.animationName = ''
+                }, 4000)
+            }} direction='down' in={onOrOff} mountOnEnter unmountOnExit>
             <Paper 
                 elevation={5}
                 sx={{
@@ -109,7 +121,7 @@ const ListFormEditing = ({editingSwitch, onOrOff, empresa, idx}) => {
                     pt:1,
                     pb:2,
                     gridRowStart: 1,
-                    gridColumnStart: 1
+                    gridColumnStart: 1,
                 }}
             >
             <ListFormEdit onSubmit={(e)=>{

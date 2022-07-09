@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ListaContainer } from '../style';
 import { Link } from 'react-router-dom';
 import { deleteCompany, getCompanies } from '../redux/companiesReducer';
@@ -22,10 +22,12 @@ const List = () => {
     const dispatch = useDispatch();
     const {empresasArrayStorage: companies, listAlert, editingStatus} = useSelector(state => state.companies);
     const empresasStatus = useSelector(state => state.companies.status);
+    
+    const focusEditedTableRow = useRef();
 
     useEffect(()=>{
         if(empresasStatus === 'idle') {
-            dispatch(getCompanies());
+                dispatch(getCompanies()).unwrap()
         }
     }, [empresasStatus, dispatch])
 
@@ -58,15 +60,40 @@ const List = () => {
     }
     //////////////////////////////////////////////////////
 
+    //const focusEditedTableRow = document.querySelector('tBody')
+
     return (
         <ListaContainer>
           
-            <Slide direction='down' in={listAlert} mountOnEnter unmountOnExit >
+            <Slide 
+                onEnter={()=>{
+                        if(editingStatus === 'idle'){
+                            setTimeout(()=>{
+                                focusEditedTableRow.current.children[companies.length-1].scrollIntoView({block:'center'});
+                                focusEditedTableRow.current.children[companies.length-1].style.animation = 'bgC 4s'
+                            },0);
+                            setTimeout(()=>{
+                                focusEditedTableRow.current.children[companies.length-1].style.animationName = ''
+                            }, 4000)
+                        } return;
+                    }} 
+                direction='down' in={listAlert} mountOnEnter unmountOnExit >
                 <Alert 
                     severity='success'
                     sx={{
                         width:260,
-                        margin: '10px auto',
+                        position:'fixed',
+                        zIndex:2,
+                        left:'40vw',
+                        '@media (max-width: 1100px)':{
+                            left:'35vw'
+                        },
+                        '@media (max-width: 820px)':{
+                            left:'30vw'
+                        },
+                        '@media (max-width: 662px)':{
+                            left:'14vw'
+                        }
                     }}>
                         {editingStatus === 'loading' ? 'Loading'
                             : editingStatus === 'success' ? 'Empresa Editada' 
@@ -75,7 +102,7 @@ const List = () => {
                 </Alert>
             </Slide>
 
-            <ListFormEditing editingSwitch={handleEditingSwitch} onOrOff={openClose} empresa={actualEmpresa} idx={actualEmpresaIndex}/>
+            <ListFormEditing editingSwitch={handleEditingSwitch} onOrOff={openClose} empresa={actualEmpresa} idx={actualEmpresaIndex} editedRow={focusEditedTableRow}/>
 
             <TableContainer sx={{overflow:'auto'}} component={Paper}>
                 <Table>
@@ -88,7 +115,8 @@ const List = () => {
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody ref={focusEditedTableRow}>
+
                         { empresasStatus === 'loading'
                             ?   (
                                     <TableRow sx={{height:62}}>
@@ -104,6 +132,12 @@ const List = () => {
                                 <TableRow
                                     selected
                                     key={index}
+                                    sx={{'@keyframes bgC':{
+                                        '0%':{bgcolor:'white'},
+                                        '50%':{bgcolor:'rgb(176, 245, 180)'},
+                                        '100%':{bgcolor:'white'}
+                                        }
+                                    }}
                                 >
 
                                     <ListTableCell ID='nome' value={company.name}/>
